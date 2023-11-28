@@ -1,0 +1,83 @@
+---
+title: "Data_merge"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+data2015_df = read_csv("./data/2015.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2015)|>
+  select(- standard_error, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+data2016_df = read_csv("./data/2016.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2016)|>
+  select(- lower_confidence_interval, - upper_confidence_interval, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+region_df = data2015_df|>
+  select(country, region)
+
+data2017_df = read_csv("./data/2017.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2017)|>
+  select(- whisker_high, - whisker_low, -dystopia_residual)|>
+  select(-generosity, everything(), generosity)
+
+data2017_df = left_join(data2017_df, region_df)|>
+  select(year, country, region, everything())|>
+  mutate(
+    
+  )
+
+data2018_df = read_csv("./data/2018.csv")|>
+  janitor::clean_names()|>
+  mutate(
+    year=2018)|>
+  select(-generosity, everything(), generosity)
+
+data2018_df = left_join(data2018_df, region_df)|>
+  select(year, country, region, everything())|>
+  mutate(
+    perception_of_corruption = as.numeric(perception_of_corruption)
+  )
+
+data2019_df = read_csv("./data/2019.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2019)|>
+  select(-generosity, everything(), generosity)
+
+data2019_df = left_join(data2019_df, region_df)|>
+  select(year, country, region, everything())
+
+hap_df = bind_rows(data2015_df, data2016_df, data2017_df, data2018_df, data2019_df)|>
+  mutate(
+    region = if_else(country == "Taiwan Province of China", "Eastern Asian", region),
+     region = if_else(country == "Hong Kong S.A.R., China", "Eastern Asian", region),
+    region = if_else(country == "Belize", "Latin America and Caribbean", region),
+    region = if_else(country == "Somalia", "Sub-Saharan Africa", region),
+    region = if_else(country == "Namibia", "Sub-Saharan Africa", region),
+    region = if_else(country == "South Sudan", "Sub-Saharan Africa", region),
+    region = if_else(country == "Trinidad & Tobago", "Latin America and Caribbean", region),
+    region = if_else(country == "Northern Cyprus", "Western Europe", region),
+    region = if_else(country == "North Macedonia", "Central and Eastern Europe", region),
+    region = if_else(country == "Gambia", "Sub-Saharan Africa", region),
+    country = if_else(country == "Hong Kong S.A.R., China", "Hong Kong", country),
+    country = if_else(country == "Northern Cyprus", "North Cyprus", country),
+    country = if_else(country == "Somaliland region", "Somalia", country),
+    country = if_else(country == "Taiwan Province of China", "Taiwan", country),
+    country = if_else(country == "Trinidad & Tobago", "Trinidad and Tobago", country)
+    )
+
+write_csv(hap_df, "./data/combined_happiness.csv")
+```
+
+
+
+
+
