@@ -57,8 +57,8 @@ data2019_df = left_join(data2019_df, region_df)|>
 
 hap_df = bind_rows(data2015_df, data2016_df, data2017_df, data2018_df, data2019_df)|>
   mutate(
-    region = if_else(country == "Taiwan Province of China", "Eastern Asian", region),
-     region = if_else(country == "Hong Kong S.A.R., China", "Eastern Asian", region),
+    region = if_else(country == "Taiwan Province of China", "Eastern Asia", region),
+     region = if_else(country == "Hong Kong S.A.R., China", "Eastern Asia", region),
     region = if_else(country == "Belize", "Latin America and Caribbean", region),
     region = if_else(country == "Somalia", "Sub-Saharan Africa", region),
     region = if_else(country == "Namibia", "Sub-Saharan Africa", region),
