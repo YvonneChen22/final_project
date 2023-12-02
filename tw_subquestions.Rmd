@@ -1,0 +1,428 @@
+---
+title: "Subquestions"
+output: html_document
+---
+
+```{r,include = FALSE}
+library(tidyverse)
+library(plotly)
+library(purrr)
+```
+
+```{r, include = FALSE}
+hap_df = read_csv("./data/combined_happiness.csv")|>
+  mutate(
+    year = as.factor(year)
+  )
+
+regional_hap_df = hap_df|>
+  group_by(region,year) |>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE),
+    average_social_support = mean(social_support, na.rm = TRUE),
+    average_healthy_life_expectancy = mean(health_life_expectancy, na.rm = TRUE),
+    average_freedom_to_make_life_choices = mean(freedom_to_make_life_choices, na.rm = TRUE),
+    average_perception_of_corruption = mean(perception_of_corruption, na.rm = TRUE),
+    average_generosity = mean(generosity, na.rm = TRUE)
+  )|>
+  pivot_longer(
+    average_gdp_per_capita:average_generosity,
+    names_to ="factor",
+    names_prefix = "average_",
+    values_to = "average_score"
+  )
+
+```
+
+## Which country has the highest and lowest score for the six factors
+### GDP Per Captia
+```{r}
+hap_df |>
+  mutate(country = fct_reorder(country, gdp_per_capita))|>
+  plot_ly (
+  x = ~country, y = ~gdp_per_capita, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "GDP Per Capita",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "GDP Per Capita"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+### Social Support
+```{r}
+hap_df |>
+  mutate(country = fct_reorder(country, social_support))|>
+  plot_ly (
+  x = ~country, y = ~social_support, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Social Support/Having Someone to Count On In Time of Trouble",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+### life Expectancy
+```{r}
+hap_df |>
+  mutate(country = fct_reorder(country, health_life_expectancy))|>
+  plot_ly (
+  x = ~country, y = ~health_life_expectancy, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Healthy Life Expectancy",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+### Freedom to make Choice 
+```{r}
+hap_df |>
+  mutate(
+    country = fct_reorder(country, freedom_to_make_life_choices))|>
+  plot_ly (
+  x = ~country, y = ~freedom_to_make_life_choices, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Freedom to Make Life Choices",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+### Perception of Corruption
+```{r}
+hap_df |>
+  mutate(country = fct_reorder(country, perception_of_corruption))|>
+  plot_ly (
+  x = ~country, y = ~perception_of_corruption, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Perception of Corruption",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+### Generosity
+```{r}
+hap_df |>
+  mutate(country = fct_reorder(country, generosity))|>
+  plot_ly (
+  x = ~country, y = ~generosity, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Genersoity",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+Iteration
+```{r, warning=FALSE}
+factor_country_level <- function(data, variable, title) {
+  p = data %>%
+    mutate(country = fct_reorder(country, .data[[variable]])) %>%
+    plot_ly(
+      x = ~country, 
+      y = as.formula(paste0("~", variable)), 
+      color = ~year,
+      type = 'bar', 
+      colors = 'viridis'
+    ) %>%
+    layout(
+      title = title,
+      xaxis = list(title = "Country", tickfont = list(size = 6)),
+      yaxis = list(title = "Score"),
+      autosize = F, width = 1000, height = 500
+    )
+  
+  print(p)
+}
+
+# Create a list of variables and corresponding titles
+variables_and_titles <- list(
+  list(variable = "gdp_per_capita", title = "GDP Per Capita"),
+  list(variable = "social_support", title = "Social Support/Having Someone to Count On In Time of Trouble"),
+  list(variable = "health_life_expectancy", title = "Healthy Life Expectancy"),
+  list(variable = "freedom_to_make_life_choices", title = "Freedom to Make Life Choices"),
+  list(variable = "perception_of_corruption", title = "Perception of Corruption"),
+  list(variable = "generosity", title = "Generosity")
+)
+
+# Use map to create a list of plots
+plots <- map(variables_and_titles, ~factor_country_level(hap_df, .x$variable, .x$title))
+
+for (plot in plots) {
+  print(plot)
+}
+```
+
+## World Trends of the Six Happiness Indicators from 2015 to 2019
+```{r}
+hap_df |>
+  group_by(year) |>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE),
+    average_social_support = mean(social_support, na.rm = TRUE),
+    average_healthy_life_expectancy = mean(health_life_expectancy, na.rm = TRUE),
+    average_freedom_to_make_life_choices = mean(freedom_to_make_life_choices, na.rm = TRUE),
+    average_perception_of_corruption = mean(perception_of_corruption, na.rm = TRUE),
+    average_generosity = mean(generosity, na.rm = TRUE)
+  )|>
+  pivot_longer(
+    average_gdp_per_capita:average_generosity,
+    names_to ="factor",
+    names_prefix = "average_",
+    values_to = "average_score"
+  )|>
+  plot_ly(
+    x = ~year, y = ~average_score, color = ~factor,
+    type = "scatter", mode = "lines+markers", colors = "viridis") |>
+  layout(
+    title = "World Trends of Happiness Indicators from 2015 to 2019",
+    xaxis = list( title = "Year"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+
+## Which region has the highest and lowest score for the six factors
+### GDP Per Capita
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, gdp_per_capita))|>
+  group_by(region, year)|>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_gdp_per_capita, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "GDP Per Capita By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "gdp_per_capita")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for GDP Per Captia from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
+### Social Support
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, social_support))|>
+  group_by(region, year)|>
+  summarise(
+    average_social_support = mean(social_support, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_social_support, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Social Support By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "social_support")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Social Support from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
+### Life Expectancy
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, health_life_expectancy))|>
+  group_by(region, year)|>
+  summarise(
+    average_life_expectancy = mean(health_life_expectancy, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_life_expectancy, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Healthy Life Expectancy By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "healthy_life_expectancy")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Life Expectancy from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
+
+### Freedom to Make Choice
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, freedom_to_make_life_choices))|>
+  group_by(region, year)|>
+  summarise(
+    average_freedom = mean(freedom_to_make_life_choices, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_freedom, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Freedom to Make Choice By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "freedom_to_make_life_choices")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Freedom to Make Life Choices from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
+### Perception of Corruption
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, perception_of_corruption))|>
+  group_by(region, year)|>
+  summarise(
+    average_corruption = mean(perception_of_corruption, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_corruption, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Perception of Corruption By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "perception_of_corruption")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Perception of Corruption from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
+### Generosity
+```{r}
+hap_df |>
+  mutate(region = fct_reorder(region, generosity))|>
+  group_by(region, year)|>
+  summarise(
+    average_generosity = mean(generosity, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_generosity, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Generosity By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 1000, height = 500
+  )
+```
+
+**Regional Trend**
+```{r}
+regional_hap_df |>
+  filter(factor == "generosity")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Generosity from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 1000, height = 500
+    )
+```
+
