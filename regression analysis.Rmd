@@ -1,0 +1,119 @@
+---
+title: "Regression Analysis"
+author: "Tingyi Li"
+date: "2023-12-03"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modelr)
+set.seed(1)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+#Part 1
+
+
+#Multiple Linear Regression for Happiness Score Prediction
+
+```{r}
+happiness_score = read_csv("./Data/combined_happiness.csv")
+
+predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = happiness_score)
+
+predicted_model|>
+  broom::tidy()|>
+  knitr::kable()
+
+```
+
+#Part 2
+
+#Multiple linear Regression for Happiness Score Prediction in 2015
+```{r}
+data_2015 = happiness_score|>
+  filter(year == 2015)
+
+model2015 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2015)
+
+model2015|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+#Multiple linear Regression for Happiness Score Prediction in 2016
+```{r}
+data_2016 = happiness_score|>
+  filter(year == 2016)
+
+model2016 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2016)
+
+model2016|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+#Multiple linear Regression for Happiness Score Prediction in 2017
+```{r}
+data_2017 = happiness_score|>
+  filter(year == 2017)
+
+model2017 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2017)
+
+model2017|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+#Multiple linear Regression for Happiness Score Prediction in 2018
+```{r}
+data_2018 = happiness_score|>
+  filter(year == 2018)
+
+model2018 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2018)
+
+model2018|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+#Multiple linear Regression for Happiness Score Prediction in 2019
+```{r}
+data_2019 = happiness_score|>
+  filter(year == 2019)
+
+model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2018)
+
+model2019|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+
+#Part 3
+
+
