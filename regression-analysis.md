@@ -112,7 +112,7 @@ model2016|>
 In 2016, the variable “freedom to make life choices” exhibited the
 largest coefficient (1.5139349) with a significant p-value(0.0001435),
 while the variable “health life expectancy” and “social support”
-exhibited the second and the third large coefficient and more
+exhibited the second and the third largest coefficient and more
 significant p-values(\<0.0001) in comparison to variable “freedom to
 make life choices”. This indicated that they all exhibited a very
 outstanding impact on happiness score in 2016. Following them,
@@ -261,6 +261,19 @@ model1|>
 | perception_of_corruption     | -0.5976465 | 0.5501586 | -1.0863167 | 0.2792328 |
 | generosity                   |  0.6492740 | 0.5101488 |  1.2727149 | 0.2052593 |
 
+From 2015 to 2019, in Central and Eastern Euraopean countries, variables
+“freedom to make life choices” exhibited the largest
+coefficient(1.7050905) with significant p-value(0.0000021) indicating
+that it impacted substantially on happiness score. Meanwhile, variables
+“gdp per capita” and “social support” exhibited relatively high
+coefficients (1.0993611) and (0.5447398) respectively with significant
+p-value (\<0.001) showing their essential impact on happiness score.
+Variables “health life expectancy”, “perception of corruption” and
+“generosity” exhibited smaller and even negative coefficients; however,
+these variables did not exhibit significant p-values(\>0.05) indicating
+that it was not significant enough to tell that they had impact on
+happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in Eastern
 Asia
 
@@ -285,6 +298,16 @@ model2|>
 | freedom_to_make_life_choices |  1.8238357 | 0.9140536 |  1.9953269 | 0.0579853 |
 | perception_of_corruption     | -6.1001405 | 1.5633140 | -3.9020571 | 0.0007172 |
 | generosity                   |  0.8764310 | 0.8352973 |  1.0492444 | 0.3049665 |
+
+From 2015 to 2019, in Eastern Asian countries, variable “perception of
+corruption” exhibited extremely high coefficient (-6.1001405) with a
+significant p-value(0.0007172) indicating that “perception of
+corruption” had extremely substantial negative impact on happiness
+score. Variable “gdp per capita” exhibited the second highest
+coefficient (2.6321054) with a significant p-value (0.0000010)
+indicating that it had essential impact on happiness score. However,
+other variables exhibited p-values larger than 0.05 showing that it was
+not significant enough to tell that they had impacts on happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in Latin
 America and Caribbean
@@ -311,6 +334,20 @@ model3|>
 | perception_of_corruption     |  1.3409006 | 0.9170861 |  1.4621317 | 0.1467204 |
 | generosity                   | -0.3165373 | 0.5087516 | -0.6221843 | 0.5351824 |
 
+From 2015 to 2019, in Latin American and Caribbean countries, variable
+“freedom to make life choices” had the most significant impact on
+happiiness score since it exhibited the highest coefficient(2.4568168)
+with extremely significant p-value (\<0.000001). Following this,
+variables “health life expectancy” and “gdp per capita” exhibited
+relatively high coefficients (1.7455082) and (1.4869935) respectively
+with significant p-values indicating their essential impact on happiness
+score. Variable “social support” exhibited a negative coefficient
+“-0.6315397” with a significant p-value (0.0066120) indicating that
+“social support” had negative impact on happiness score. However,
+variables “perception of corruption” and “generosity” appear to have
+p-values(\>0.05) indicating that it was not significant enough to tell
+that they had impacts on happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in Middle
 East and Northern Africa
 
@@ -335,6 +372,19 @@ model4|>
 | freedom_to_make_life_choices |  1.3532650 | 0.4613435 |  2.9333131 | 0.0042752 |
 | perception_of_corruption     |  0.3720748 | 0.6673868 |  0.5575099 | 0.5785945 |
 | generosity                   | -1.4347645 | 0.4915314 | -2.9189679 | 0.0044584 |
+
+From 2015 to 2019, in Middle Eastern and Northern African countries,
+variables “health life expectancy” exhibited the largest coefficient
+(2.0670148) with a significant p-value(0.0000229), while the variable
+“gdp per capita” exhibited the second largest coefficient and more
+significant p-values(\<0.0001) in comparison to variable “health life
+expectancy”. The variables “generosity”,“freedom to make life choices”
+and “social support” also exhibited relatively large coefficient with
+significant p-value. This indicated that they all exhibited a very
+outstanding impact on happiness score. However, variable “perception of
+corruption” appeared to have p-values 0.5785945, which is larger than
+0.05, indicating that it didn’t exhibit significant impact to the
+happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in North
 America
@@ -361,6 +411,11 @@ model5|>
 | perception_of_corruption     |  1.4273085 | 0.5532336 |  2.5799383 | 0.0817842 |
 | generosity                   |  0.4721823 | 0.4867702 |  0.9700313 | 0.4035808 |
 
+From 2015 to 2019, in North American countries, none of the 6 variables
+exhibited significant p-value since all their p-values were greater than
+0.05 indicating that none of the variables exhibit significant impact to
+the happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in
 Southeastern Asia
 
@@ -385,6 +440,13 @@ model6|>
 | freedom_to_make_life_choices | -0.9335115 | 1.0718734 | -0.8709158 | 0.3894160 |
 | perception_of_corruption     | -0.6520931 | 0.6148682 | -1.0605413 | 0.2957725 |
 | generosity                   |  0.0954657 | 0.4326026 |  0.2206775 | 0.8265568 |
+
+From 2015 to 2019, in Southeastern Asian countries, only variable “gdp
+per capita” exhibited relatively high coefficient (1.6457687) with
+significant p-value (0.0000165) indicating that “gdp per capita” had
+substantial impact on happiness scrore. Despite “gdp per capita”, none
+of other variables exhibited significant p-values indicating that we did
+not have sufficient evidence to show their impact on happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in Southern
 Asia
@@ -411,6 +473,12 @@ model7|>
 | perception_of_corruption     |  8.8312157 | 2.1766502 |  4.0572507 | 0.0003603 |
 | generosity                   |  0.4649207 | 0.9043858 |  0.5140734 | 0.6112343 |
 
+From 2015 to 2019, in Southern Asian countries, only one variable,
+“perception of corruption”, exhibited significant p-value (0.0003603)
+with extremely high coefficient (8.8312157) indicating that among all 6
+variables, “perception of corruption” had the largest impact on
+happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in
 Sub-Saharan Africa
 
@@ -436,8 +504,17 @@ model8|>
 | perception_of_corruption     | -0.6583010 | 0.4600525 | -1.4309258 | 0.1541028 |
 | generosity                   |  2.0618730 | 0.4998157 |  4.1252665 | 0.0000555 |
 
-\#Multiple linear Regression for Happiness Score Prediction in Western
-Europe
+From 2015 to 2019, in Sub- Saharan African countries, variable
+“generosity” exhibited coefficient (2.0618730) with significant p-value
+(0.0000555) indicating that it had the most substantial impact on
+happiness score. Following this, variables “freedom to make life
+choice”, “social support” and “gdp per capita” also had essential impact
+on happiness score since they had relatively large coefficient and
+significant p-value(\<0.001). However, “health life expectancy” and
+“perception of corruption” did not appear to have significant p-value
+(\>0.05) indicating that they did not have significant impact on
+happiness score. \#Multiple linear Regression for Happiness Score
+Prediction in Western Europe
 
 ``` r
 west_europe = happiness_score|>
@@ -460,3 +537,9 @@ model9|>
 | freedom_to_make_life_choices | 0.8686215 | 0.3881809 |  2.237672 | 0.0275070 |
 | perception_of_corruption     | 2.7240472 | 0.3798791 |  7.170826 | 0.0000000 |
 | generosity                   | 1.2352683 | 0.3167298 |  3.900070 | 0.0001763 |
+
+From 2015 to 2019, in Western European countries, all 6 variables had
+significant impact on happiness score since their p-value were all
+smaller than 0.05. Among these variables, “perception of corruption”
+exhibited the largest coefficient and the smallest p-valu indicating
+that it had the most significant impact on happiness score.

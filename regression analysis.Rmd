@@ -78,7 +78,7 @@ model2016|>
   knitr::kable()
 ```
 
-In 2016, the variable "freedom to make life choices" exhibited the largest coefficient (1.5139349) with a significant p-value(0.0001435), while the variable "health life expectancy" and "social support" exhibited the second and the third large coefficient and more significant p-values(<0.0001) in comparison to variable "freedom to make life choices". This indicated that they all exhibited a very outstanding impact on happiness score in 2016. Following them, "perception of corruption" and "gdp per capita" also appeared to have relatively high estimates with p-values smaller than 0.05, indicating that there were sufficient evidences to show their effects on happiness score. However, variable "generosity" appeared to have p-values  0.6602362, which is larger than 0.05, indicating that it didn't  exhibit significant impact to 2016's happiness score.
+In 2016, the variable "freedom to make life choices" exhibited the largest coefficient (1.5139349) with a significant p-value(0.0001435), while the variable "health life expectancy" and "social support" exhibited the second and the third largest coefficient and more significant p-values(<0.0001) in comparison to variable "freedom to make life choices". This indicated that they all exhibited a very outstanding impact on happiness score in 2016. Following them, "perception of corruption" and "gdp per capita" also appeared to have relatively high estimates with p-values smaller than 0.05, indicating that there were sufficient evidences to show their effects on happiness score. However, variable "generosity" appeared to have p-values  0.6602362, which is larger than 0.05, indicating that it didn't  exhibit significant impact to 2016's happiness score.
 
 #Multiple linear Regression for Happiness Score Prediction in 2017
 ```{r}
@@ -140,6 +140,7 @@ model1|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in Central and Eastern Euraopean countries, variables "freedom to make life choices" exhibited the largest coefficient(1.7050905) with significant p-value(0.0000021) indicating that it impacted substantially on happiness score. Meanwhile, variables "gdp per capita" and "social support" exhibited relatively high coefficients (1.0993611) and (0.5447398) respectively with significant p-value (<0.001) showing their essential impact on happiness score. Variables "health life expectancy", "perception of corruption" and "generosity" exhibited smaller and even negative coefficients; however, these variables did not exhibit significant p-values(>0.05) indicating that it was not significant enough to tell that they had impact on happiness score.
 
 #Multiple linear Regression for Happiness Score Prediction in Eastern Asia
 ```{r}
@@ -154,6 +155,8 @@ model2|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in Eastern Asian countries, variable "perception of corruption" exhibited extremely high coefficient (-6.1001405) with a significant p-value(0.0007172) indicating that "perception of corruption" had extremely substantial negative impact on happiness score. Variable "gdp per capita" exhibited the second highest coefficient (2.6321054) with a significant p-value (0.0000010) indicating that it had essential impact on happiness score. However, other variables exhibited p-values larger than 0.05 showing that it was not significant enough to tell that they had impacts on happiness score.
+
 #Multiple linear Regression for Happiness Score Prediction in Latin America and Caribbean
 ```{r}
 latin_caribbean = happiness_score|>
@@ -167,6 +170,7 @@ model3|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in Latin American and Caribbean countries, variable "freedom to make life choices" had the most significant impact on happiiness score since it exhibited the highest coefficient(2.4568168) with extremely significant p-value (<0.000001). Following this, variables "health life expectancy" and "gdp per capita" exhibited relatively high coefficients (1.7455082) and (1.4869935) respectively with significant p-values indicating their essential impact on happiness score. Variable "social support" exhibited a negative coefficient "-0.6315397" with a significant p-value (0.0066120) indicating that "social support" had negative impact on happiness score. However, variables "perception of corruption" and "generosity" appear to have p-values(>0.05) indicating that it was not significant enough to tell that they had impacts on happiness score.
 
 #Multiple linear Regression for Happiness Score Prediction in Middle East and Northern Africa
 ```{r}
@@ -180,7 +184,7 @@ model4|>
   broom::tidy()|>
   knitr::kable()
 ```
-
+From 2015 to 2019, in Middle Eastern and Northern African countries, variables "health life expectancy" exhibited the largest coefficient (2.0670148) with a significant p-value(0.0000229), while the variable "gdp per capita" exhibited the second largest coefficient and more significant p-values(<0.0001) in comparison to variable "health life expectancy". The variables "generosity","freedom to make life choices" and "social support" also exhibited relatively large coefficient with significant p-value. This indicated that they all exhibited a very outstanding impact on happiness score. However, variable "perception of corruption" appeared to have p-values 0.5785945, which is larger than 0.05, indicating that it didn't  exhibit significant impact to the happiness score.
 
 #Multiple linear Regression for Happiness Score Prediction in North America
 ```{r}
@@ -195,6 +199,8 @@ model5|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in North American countries, none of the 6 variables exhibited significant p-value since all their p-values were greater than 0.05 indicating that none of the variables exhibit significant impact to the happiness score.
+
 #Multiple linear Regression for Happiness Score Prediction in Southeastern Asia
 ```{r}
 southeastern_asia = happiness_score|>
@@ -207,6 +213,8 @@ model6|>
   broom::tidy()|>
   knitr::kable()
 ```
+
+From 2015 to 2019, in Southeastern Asian countries, only variable "gdp per capita" exhibited relatively high coefficient (1.6457687) with significant p-value (0.0000165) indicating that "gdp per capita" had substantial impact on happiness scrore. Despite "gdp per capita", none of other variables exhibited significant p-values indicating that we did not have sufficient evidence to show their impact on happiness score.
 
 #Multiple linear Regression for Happiness Score Prediction in Southern Asia
 ```{r}
@@ -221,6 +229,8 @@ model7|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in Southern Asian countries, only one variable, "perception of corruption", exhibited significant p-value (0.0003603) with extremely high coefficient (8.8312157) indicating that among all 6 variables, "perception of corruption" had the largest impact on happiness score.
+
 #Multiple linear Regression for Happiness Score Prediction in Sub-Saharan Africa
 ```{r}
 sub_africa = happiness_score|>
@@ -234,6 +244,7 @@ model8|>
   knitr::kable()
 ```
 
+From 2015 to 2019, in Sub- Saharan African countries, variable "generosity" exhibited coefficient (2.0618730) with significant p-value (0.0000555) indicating that it had the most substantial impact on happiness score. Following this, variables "freedom to make life choice", "social support" and "gdp per capita" also had essential impact on happiness score since they had relatively large coefficient and significant p-value(<0.001). However, "health life expectancy" and "perception of corruption" did not appear to have significant p-value (>0.05) indicating that they did not have significant impact on happiness score.
 #Multiple linear Regression for Happiness Score Prediction in Western Europe
 ```{r}
 west_europe = happiness_score|>
@@ -246,4 +257,4 @@ model9|>
   broom::tidy()|>
   knitr::kable()
 ```
-
+From 2015 to 2019, in Western European countries, all 6 variables had significant impact on happiness score since their p-value were all smaller than 0.05. Among these variables, "perception of corruption" exhibited the largest coefficient and the smallest p-valu indicating that it had the most significant impact on happiness score. 
