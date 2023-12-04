@@ -40,12 +40,13 @@ predicted_model|>
 | generosity                   | 0.5924416 | 0.1757022 |  3.371851 | 0.0007837 |
 
 The variable “freedom to make life choices” exhibits the largest
-coefficient (1.4812709) with a highly significant p-value, indicating it
-exerts the most substantial effect on happiness scores. Following this,
-“GDP per capita”, “Health life expectancy”, and “Social support” are
-also significant contributors to happiness in order of their estimates.
-“Perception of corruption” and “Generosity” also significantly impact
-happiness but to a lesser extent, based on their estimates and p-values.
+coefficient (1.4812709) with a highly significant p-value(\<0.0000001),
+indicating it exerts the most substantial effect on happiness scores.
+Following this, “GDP per capita”, “Health life expectancy”, and “Social
+support” are also significant contributors to happiness in order of
+their estimates. “Perception of corruption” and “Generosity” also
+significantly impact happiness but to a lesser extent, based on their
+estimates and p-values.
 
 \#Part 2
 
@@ -72,6 +73,18 @@ model2015|>
 | freedom_to_make_life_choices | 1.3334329 | 0.3850157 | 3.4633211 | 0.0006944 |
 | perception_of_corruption     | 0.7845381 | 0.4365328 | 1.7972032 | 0.0743018 |
 | generosity                   | 0.3889329 | 0.3910029 | 0.9947057 | 0.3214707 |
+
+In 2015, the variable “social support” exhibited the largest coefficient
+(1.4088916) with the lowest p-value(\<0.0000001) among all variables.
+This indicated that it performed the most substantial effect on
+happiness score in 2015. Following “social support”, “freedom to make
+life choices”, “health life expectancy” and “gdp per capita” also
+appeared to have relatively high estimates, indicating that there were
+sufficient evidences to show their essential effects on happiness score
+according to their p-value. However, “perception of corruption” and
+“generosity” appeared to have p-values larger than 0.05 indicating that
+we do not have sufficient evidence to conclude that they had significant
+impact on happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in 2016
 
