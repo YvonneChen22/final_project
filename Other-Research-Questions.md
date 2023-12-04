@@ -1,48 +1,33 @@
----
-title: "Other Research Questions"
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(ggplot2)
-library(tidyverse)
-library(ggplot2)
-library(stringr)
-library(maps)
-library(magrittr)
-library(rvest)
-library(countrycode)
-```
+Other Research Questions
+================
 
 Import dataset
-```{r}
+
+``` r
 combined_happiness = read.csv("./combined_happiness.csv") |>
   janitor::clean_names()
 
 combined_happiness$region[combined_happiness$region == "Eastern Asian"] <- "Eastern Asia"
 ```
 
-
-
-
 Wordmap Preparation
-```{r}
+
+``` r
 iso_codes = countrycode::codelist[, c("un.name.en", "iso3c")]
 names(iso_codes) = c("Country", "ISO3")
 ```
 
-```{r, warning = FALSE, message = FALSE}
+``` r
 world_data <- ggplot2::map_data('world')
 world_data <- fortify(world_data)
 ```
 
-```{r}
+``` r
 combined_happiness['ISO3'] <- iso_codes$ISO3[match(combined_happiness$country, iso_codes$Country)]
 world_data["ISO3"] <- iso_codes$ISO3[match(world_data$region, iso_codes$Country)]
 ```
 
-```{r}
+``` r
 combined_happiness = combined_happiness |>
   mutate(
     ISO3 = if_else(country == "United States", "USA", ISO3),
@@ -75,7 +60,7 @@ combined_happiness = combined_happiness |>
                          "Congo (Brazzaville)" = "Republic of Congo"))
 ```
 
-```{r}
+``` r
 world_data = world_data|>
   mutate(country = region)|>
   select(-region)
@@ -83,7 +68,13 @@ world_data = world_data|>
 worldjoin <- inner_join(world_data, combined_happiness, by = "country")
 ```
 
-```{r, fig.width=12, fig.height=9, fig.retina=2}
+    ## Warning in inner_join(world_data, combined_happiness, by = "country"): Detected an unexpected many-to-many relationship between `x` and `y`.
+    ## ℹ Row 11 of `x` matches multiple rows in `y`.
+    ## ℹ Row 153 of `y` matches multiple rows in `x`.
+    ## ℹ If a many-to-many relationship is expected, set `relationship =
+    ##   "many-to-many"` to silence this warning.
+
+``` r
 ## compile all map theme configurations
 cleanup <- theme(
   axis.text = element_blank(),
@@ -97,12 +88,14 @@ cleanup <- theme(
 )
 ```
 
-
 # Q1: Which country has the highest and lowest happiness score?
-In order to explore the distribution of ahppiniess score all over the world, we draw bar charts of happiness score for each year in descending order and categorize countries into different region.
-## 2015
-### bar chat
-```{r}
+
+In order to explore the distribution of ahppiniess score all over the
+world, we draw bar charts of happiness score for each year in descending
+order and categorize countries into different region. \## 2015 \### bar
+chat
+
+``` r
 combined_happiness |>
   filter(year == "2015") |>
   arrange(desc(score)) |>
@@ -112,10 +105,14 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-In year 2015, Switzerland has the highest happiness score while Togo has the lowest happiness score among 158 countries.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+In year 2015, Switzerland has the highest happiness score while Togo has
+the lowest happiness score among 158 countries.
 
 ### wordmap
-```{r}
+
+``` r
 hp_2015 <- worldjoin |>
   filter(year == "2015") |>
   ggplot(mapping = aes(
@@ -131,8 +128,11 @@ hp_2015 <- worldjoin |>
 hp_2015
 ```
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
 ## 2016
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2016") |>
   arrange(desc(score)) |>
@@ -142,10 +142,14 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-In year 2016, Denmark has the highest happiness score while Burundi has the lowest happiness score among 157 countries.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+In year 2016, Denmark has the highest happiness score while Burundi has
+the lowest happiness score among 157 countries.
 
 ### wordmap
-```{r}
+
+``` r
 hp_2016 <- worldjoin |>
   filter(year == "2016") |>
   ggplot(mapping = aes(
@@ -161,9 +165,13 @@ hp_2016 <- worldjoin |>
 hp_2016
 ```
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
 ## 2017
+
 ### bar chat
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2017") |>
   arrange(desc(score)) |>
@@ -173,10 +181,14 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-In year 2017, Norway has the highest happiness score while Central African Republic has the lowest happiness score among 155 countries.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+In year 2017, Norway has the highest happiness score while Central
+African Republic has the lowest happiness score among 155 countries.
 
 ### wordmap
-```{r}
+
+``` r
 hp_2017 <- worldjoin |>
   filter(year == "2017") |>
   ggplot(mapping = aes(
@@ -192,10 +204,13 @@ hp_2017 <- worldjoin |>
 hp_2017
 ```
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ## 2018
+
 ### bar chart
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2018") |>
   arrange(desc(score)) |>
@@ -205,10 +220,14 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-In year 2018, Finland has the highest happiness score while Burundi has the lowest happiness score among 156 countries.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+In year 2018, Finland has the highest happiness score while Burundi has
+the lowest happiness score among 156 countries.
 
 ### wordmap
-```{r}
+
+``` r
 hp_2018 <- worldjoin |>
   filter(year == "2018") |>
   ggplot(mapping = aes(
@@ -224,9 +243,13 @@ hp_2018 <- worldjoin |>
 hp_2018
 ```
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
 ## 2019
+
 ### bar chart
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2019") |>
   arrange(desc(score)) |>
@@ -236,10 +259,14 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-In year 2019, Finland has the highest happiness score while South Sudan has the lowest happiness score among 156 countries.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+In year 2019, Finland has the highest happiness score while South Sudan
+has the lowest happiness score among 156 countries.
 
 ### wordmap
-```{r}
+
+``` r
 hp_2019 <- worldjoin |>
   filter(year == "2019") |>
   ggplot(mapping = aes(
@@ -255,9 +282,13 @@ hp_2019 <- worldjoin |>
 hp_2019
 ```
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
 ## Average in 5 years
+
 ### bar chart
-```{r}
+
+``` r
 hp_avg = 
 combined_happiness |>
   select(year, country, region, score) |>
@@ -282,11 +313,25 @@ hp_avg|>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
-We only keep countries that are in the top rank for all five years. Among those 144 countries, Danmark has the highest average happiness score while Burundi has the lowest average happiness score in 5 years.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+We only keep countries that are in the top rank for all five years.
+Among those 144 countries, Danmark has the highest average happiness
+score while Burundi has the lowest average happiness score in 5 years.
 
 ### wordmap
-```{r}
+
+``` r
 wold_avg <- inner_join(world_data, hp_avg, by = "country")
+```
+
+    ## Warning in inner_join(world_data, hp_avg, by = "country"): Detected an unexpected many-to-many relationship between `x` and `y`.
+    ## ℹ Row 11 of `x` matches multiple rows in `y`.
+    ## ℹ Row 701 of `y` matches multiple rows in `x`.
+    ## ℹ If a many-to-many relationship is expected, set `relationship =
+    ##   "many-to-many"` to silence this warning.
+
+``` r
 hp_avg_plot <- wold_avg |>
   ggplot(mapping = aes(
     x=long,
@@ -301,12 +346,15 @@ hp_avg_plot <- wold_avg |>
 hp_avg_plot
 ```
 
-
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 # Q2: Which region has the highest and lowest happiness score?
+
 ## 2015
+
 ### bar chat
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2015") |>
   group_by(region) |>
@@ -319,12 +367,17 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2015, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+In year 2015, Australia and New Zealand has the highest happiness score
+while Sub-Saharan Africa has the lowest happiness score among 10
+regions.
 
 ## 2016
+
 ### bar chart
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2016") |>
   group_by(region) |>
@@ -337,12 +390,17 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2016, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+In year 2016, Australia and New Zealand has the highest happiness score
+while Sub-Saharan Africa has the lowest happiness score among 10
+regions.
 
 ## 2017
+
 ### bar chat
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2017") |>
   group_by(region) |>
@@ -355,13 +413,17 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2017, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
-
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+In year 2017, Australia and New Zealand has the highest happiness score
+while Sub-Saharan Africa has the lowest happiness score among 10
+regions.
 
 ## 2018
+
 ### bar chart
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2018") |>
   group_by(region) |>
@@ -374,12 +436,17 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2018, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+In year 2018, Australia and New Zealand has the highest happiness score
+while Sub-Saharan Africa has the lowest happiness score among 10
+regions.
 
 ## 2019
+
 ### bar chart
-```{r}
+
+``` r
 combined_happiness |>
   filter(year == "2019") |>
   group_by(region) |>
@@ -392,11 +459,17 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2019, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+In year 2019, Australia and New Zealand has the highest happiness score
+while Sub-Saharan Africa has the lowest happiness score among 10
+regions.
 
 ## Average in 5 years
+
 ### bar chart
-```{r}
+
+``` r
 hp_avg|>
   group_by(region) |>
   mutate(region_avg = mean(score)) |>
@@ -408,11 +481,15 @@ hp_avg|>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-From 2015 to 2019, Australia and New Zealand has the highest average happiness score while Sub-Saharan Africa has the lowest average happiness score among 10 regions.
 
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+From 2015 to 2019, Australia and New Zealand has the highest average
+happiness score while Sub-Saharan Africa has the lowest average
+happiness score among 10 regions.
 
 # Q3: What are some trends of mean happiness score in different regions from 2015 – 2019?
-```{r}
+
+``` r
 combined_happiness |>
   group_by(year, region) |>
   mutate(region_avg = mean(score)) |>
@@ -422,10 +499,9 @@ combined_happiness |>
   geom_point() + 
   geom_line() +
   labs(title = "World Happiness Score Trend in 10 Regions", x = "year", y = "Happiness Score")
-
-
 ```
 
+    ## `summarise()` has grouped output by 'year'. You can override using the
+    ## `.groups` argument.
 
-
-
+![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
