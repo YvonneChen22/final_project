@@ -301,8 +301,115 @@ hp_avg_plot <- wold_avg |>
 
 hp_avg_plot
 ```
-# Q2: Which region has the highest and lowest happiness score?
 
+
+
+# Q2: Which region has the highest and lowest happiness score?
+## 2015
+### bar chat
+```{r}
+combined_happiness |>
+  filter(year == "2015") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2015 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+In year 2015, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+
+## 2016
+### bar chart
+```{r}
+combined_happiness |>
+  filter(year == "2016") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2016 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+In year 2016, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+
+## 2017
+### bar chat
+```{r}
+combined_happiness |>
+  filter(year == "2017") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2017 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+In year 2017, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+
+
+## 2018
+### bar chart
+```{r}
+combined_happiness |>
+  filter(year == "2018") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2018 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+In year 2018, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+
+## 2019
+### bar chart
+```{r}
+combined_happiness |>
+  filter(year == "2019") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2019 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+In year 2019, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+## Average in 5 years
+### bar chart
+```{r}
+hp_avg|>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(score_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average World Happiness Score Rank 2015-2019", x = "Countries", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  theme(legend.position = "none")
+```
+From 2015 to 2019, Australia and New Zealand has the highest average happiness score while Sub-Saharan Africa has the lowest average happiness score among 10 regions.
 
 
 
