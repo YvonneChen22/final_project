@@ -79,12 +79,11 @@ In 2015, the variable “social support” exhibited the largest coefficient
 This indicated that it performed the most substantial effect on
 happiness score in 2015. Following “social support”, “freedom to make
 life choices”, “health life expectancy” and “gdp per capita” also
-appeared to have relatively high estimates, indicating that there were
-sufficient evidences to show their essential effects on happiness score
-according to their p-value. However, “perception of corruption” and
+appeared to have relatively high estimates with significant p-values ,
+indicating that there were sufficient evidences to show their essential
+effects on happiness score. However, “perception of corruption” and
 “generosity” appeared to have p-values larger than 0.05 indicating that
-we do not have sufficient evidence to conclude that they had significant
-impact on happiness score.
+they didn’t have significant impact on happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in 2016
 
@@ -110,6 +109,20 @@ model2016|>
 | perception_of_corruption     | 0.9189270 | 0.4647615 |  1.9772014 | 0.0498518 |
 | generosity                   | 0.1594941 | 0.3621060 |  0.4404626 | 0.6602362 |
 
+In 2016, the variable “freedom to make life choices” exhibited the
+largest coefficient (1.5139349) with a significant p-value(0.0001435),
+while the variable “health life expectancy” and “social support”
+exhibited the second and the third large coefficient and more
+significant p-values(\<0.0001) in comparison to variable “freedom to
+make life choices”. This indicated that they all exhibited a very
+outstanding impact on happiness score in 2016. Following them,
+“perception of corruption” and “gdp per capita” also appeared to have
+relatively high estimates with p-values smaller than 0.05, indicating
+that there were sufficient evidences to show their effects on happiness
+score. However, variable “generosity” appeared to have p-values
+0.6602362, which is larger than 0.05, indicating that it didn’t exhibit
+significant impact to 2016’s happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in 2017
 
 ``` r
@@ -133,6 +146,21 @@ model2017|>
 | freedom_to_make_life_choices | 1.4757152 | 0.3425093 |  4.308541 | 0.0000298 |
 | perception_of_corruption     | 0.8266072 | 0.4843307 |  1.706700 | 0.0899751 |
 | generosity                   | 0.3807181 | 0.3293271 |  1.156049 | 0.2495240 |
+
+In 2017, the variable “freedom to make life choices” and “health life
+expectancy” exhibited the largest 2 coefficient (1.4757152) and
+(1.2888803) with significant p-values (0.0000298) and (0.0000965)
+respectively, while the variable “social support” exhibited the third
+largest coefficient and more significant p-values(\<0.000001) in
+comparison to variable “freedom to make life choices” and “health life
+expectancy”. This indicated that they all exhibited a very outstanding
+impacts on happiness score in 2017. Following them, “gdp per capita”
+also appeared to have relatively high estimates (0.7844334) with
+p-values (0.0001849), indicating that there were sufficient evidences to
+show a significant impact on happiness score. However, variable
+“perception of corruption” and “generosity” appeared to have p-values
+larger than 0.05, indicating that they didn’t exhibit significant impact
+to 2017’s happiness score.
 
 \#Multiple linear Regression for Happiness Score Prediction in 2018
 
@@ -158,6 +186,18 @@ model2018|>
 | perception_of_corruption     | 0.7277888 | 0.5277904 |  1.378935 | 0.1699951 |
 | generosity                   | 0.5235668 | 0.4717544 |  1.109829 | 0.2688726 |
 
+In 2018, the variable “freedom to make life choices” and “social
+support” exhibited the largest 2 coefficient (1.3984419) and (1.1150219)
+with significant p-values (0.0000214) and (0.0000005) respectively,
+indicating that they play very substantial job on impacting happiness
+score. Following them, the variables “health life expectancy” and “gdp
+per capita” exhibited relatively large coefficients with significant
+p-values(\<0.01), indicating that they also exhibited very outstanding
+impacts on happiness score in 2018. However, variable “perception of
+corruption” and “generosity” appeared to have p-values larger than 0.05,
+indicating that they didn’t exhibit significant impact to 2018’s
+happiness score.
+
 \#Multiple linear Regression for Happiness Score Prediction in 2019
 
 ``` r
@@ -165,7 +205,7 @@ data_2019 = happiness_score|>
   filter(year == 2019)
 
 model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
-                     data = data_2018)
+                     data = data_2019)
 
 model2019|>
   broom::tidy()|>
@@ -174,13 +214,25 @@ model2019|>
 
 | term                         |  estimate | std.error | statistic |   p.value |
 |:-----------------------------|----------:|----------:|----------:|----------:|
-| (Intercept)                  | 1.8234561 | 0.1977108 |  9.222845 | 0.0000000 |
-| gdp_per_capita               | 0.9017459 | 0.2423630 |  3.720642 | 0.0002816 |
-| social_support               | 1.1150219 | 0.2117195 |  5.266505 | 0.0000005 |
-| health_life_expectancy       | 0.9671218 | 0.3425058 |  2.823666 | 0.0054021 |
-| freedom_to_make_life_choices | 1.3984419 | 0.3185447 |  4.390096 | 0.0000214 |
-| perception_of_corruption     | 0.7277888 | 0.5277904 |  1.378935 | 0.1699951 |
-| generosity                   | 0.5235668 | 0.4717544 |  1.109829 | 0.2688726 |
+| (Intercept)                  | 1.7952202 | 0.2110734 | 8.5051942 | 0.0000000 |
+| gdp_per_capita               | 0.7753716 | 0.2182254 | 3.5530776 | 0.0005103 |
+| social_support               | 1.1241916 | 0.2369001 | 4.7454252 | 0.0000048 |
+| health_life_expectancy       | 1.0781427 | 0.3345385 | 3.2227764 | 0.0015596 |
+| freedom_to_make_life_choices | 1.4548324 | 0.3753378 | 3.8760610 | 0.0001587 |
+| perception_of_corruption     | 0.9722802 | 0.5423607 | 1.7926818 | 0.0750526 |
+| generosity                   | 0.4897834 | 0.4977455 | 0.9840036 | 0.3267089 |
+
+In 2019, the variable “freedom to make life choices” and “social
+support” exhibited the largest 2 coefficient (1.4548324) and (1.1241916)
+with significant p-values (0.0001587) and (0.0000048) respectively,
+indicating that they play very substantial job on impacting happiness
+score. Following them, the variables “health life expectancy” and “gdp
+per capita” exhibited relatively large coefficients with significant
+p-values(\<0.01), indicating that they also exhibited very outstanding
+impacts on happiness score in 2019. However, variable “perception of
+corruption” and “generosity” appeared to have p-values larger than 0.05,
+indicating that they didn’t exhibit significant impact to 2019’s
+happiness score.
 
 \#Part 3
 
