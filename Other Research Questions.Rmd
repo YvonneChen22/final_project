@@ -96,6 +96,8 @@ Import dataset
 ```{r}
 combined_happiness = read.csv("./combined_happiness.csv") |>
   janitor::clean_names()
+
+combined_happiness$region[combined_happiness$region == "Eastern Asian"] <- "Eastern Asia"
 ```
 
 
@@ -412,6 +414,20 @@ hp_avg|>
 From 2015 to 2019, Australia and New Zealand has the highest average happiness score while Sub-Saharan Africa has the lowest average happiness score among 10 regions.
 
 
+# Q3: What are some trends of mean happiness score in different regions from 2015 – 2019?
+```{r}
+combined_happiness |>
+  group_by(year, region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = year, y = score, color = region)) +
+  geom_point() + 
+  geom_line() +
+  labs(title = "World Happiness Score Trend in 10 Regions", x = "year", y = "Happiness Score")
+
+
+```
 
 
 
