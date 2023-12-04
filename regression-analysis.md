@@ -234,6 +234,16 @@ corruption” and “generosity” appeared to have p-values larger than 0.05,
 indicating that they didn’t exhibit significant impact to 2019’s
 happiness score.
 
+According to the linear regressions performed separately for each year
+from 2015 to 2019, the main factor that impacted the happiness score
+changed over time. In 2015, “social support” had the most substantial
+impact on the happiness score, and its impact kept being significant
+until 2019. In the following 4 years, “freedom to make life choices”
+appeared to make the greatest impact on the happiness score. “health
+life expectancy” also impacted significantly on the happiness score
+since it exhibited the second or the third largest coefficient in the
+linear regression model from 2016 to 2019.
+
 \#Part 3
 
 \#Multiple linear Regression for Happiness Score Prediction in Central
@@ -261,7 +271,7 @@ model1|>
 | perception_of_corruption     | -0.5976465 | 0.5501586 | -1.0863167 | 0.2792328 |
 | generosity                   |  0.6492740 | 0.5101488 |  1.2727149 | 0.2052593 |
 
-From 2015 to 2019, in Central and Eastern Euraopean countries, variables
+From 2015 to 2019, in Central and Eastern European countries, variables
 “freedom to make life choices” exhibited the largest
 coefficient(1.7050905) with significant p-value(0.0000021) indicating
 that it impacted substantially on happiness score. Meanwhile, variables
@@ -543,3 +553,19 @@ significant impact on happiness score since their p-value were all
 smaller than 0.05. Among these variables, “perception of corruption”
 exhibited the largest coefficient and the smallest p-valu indicating
 that it had the most significant impact on happiness score.
+
+According to the linear regression model performed separately according
+to their regions, factors that impacted the happiness score varied a
+lot. One extreme case took place in North American countries since none
+of the factors were playing significant roles in impacting their
+happiness score; another extreme case took place in western- European
+countries since all 6 variables had significant impact on the happiness
+score while “perception of corruption” was the main factors. The linear
+regression models also indicate that both Southern Asian countries and
+Southeastern Asian countries had only one factor, “perception of
+corruption” and “gdp per capita” respectively with extremely significant
+p-values. “freedom to make life choices” appeared to make the greatest
+impact on the happiness score in Central and Eastern European and Latin
+American and Caribbean countries countries.”perception of corruption”
+played a substantial role on impacting the happiness score in southern
+Asian countries and eastern Asian countries.
