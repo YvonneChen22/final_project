@@ -28,3 +28,13 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4))
 ```
 
+# 2016
+```{r}
+combined_happiness |>
+  filter(year == "2016") |>
+  arrange(desc(score)) |>
+  ggplot(aes(x = reorder(country, -score), y = score)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2015 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4))
+```
