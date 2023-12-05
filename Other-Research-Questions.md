@@ -90,10 +90,15 @@ cleanup <- theme(
 
 # Q1: Which country has the highest and lowest happiness score?
 
-In order to explore the distribution of ahppiniess score all over the
+In order to explore the distribution of happiness score all over the
 world, we draw bar charts of happiness score for each year in descending
-order and categorize countries into different region. \## 2015 \### bar
-chat
+order showing different region with color and legends. We also use heat
+map in world map to show the geographic distribution of happiness score
+over the world.
+
+## 2015
+
+### bar chat
 
 ``` r
 combined_happiness |>
@@ -107,6 +112,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
 In year 2015, Switzerland has the highest happiness score while Togo has
 the lowest happiness score among 158 countries.
 
@@ -130,6 +136,10 @@ hp_2015
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+In general, countries in Europe, Australia, North and South America have
+higher happiness score while countries in Africa and Middle East Asia
+has relatively lower happiness score in 2015.
+
 ## 2016
 
 ``` r
@@ -144,6 +154,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
 In year 2016, Denmark has the highest happiness score while Burundi has
 the lowest happiness score among 157 countries.
 
@@ -167,6 +178,10 @@ hp_2016
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
+In general, countries in Europe, Australia, North and South America have
+higher happiness score while countries in Africa and Middle East Asia
+has relatively lower happiness score in 2016.
+
 ## 2017
 
 ### bar chat
@@ -183,6 +198,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
 In year 2017, Norway has the highest happiness score while Central
 African Republic has the lowest happiness score among 155 countries.
 
@@ -206,6 +222,10 @@ hp_2017
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
+In general, countries in Europe, Australia, North and South America have
+higher happiness score while countries in Africa and Middle East Asia
+has relatively lower happiness score in 2017.
+
 ## 2018
 
 ### bar chart
@@ -222,6 +242,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
 In year 2018, Finland has the highest happiness score while Burundi has
 the lowest happiness score among 156 countries.
 
@@ -245,6 +266,10 @@ hp_2018
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
+In general, countries in Europe, Australia, North and South America have
+higher happiness score while countries in Africa and Middle East Asia
+has relatively lower happiness score in 2018.
+
 ## 2019
 
 ### bar chart
@@ -261,6 +286,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
 In year 2019, Finland has the highest happiness score while South Sudan
 has the lowest happiness score among 156 countries.
 
@@ -283,6 +309,10 @@ hp_2019
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+In general, countries in Europe, Australia, North and South America have
+higher happiness score while countries in Africa and Middle East Asia
+has relatively lower happiness score in 2019.
 
 ## Average in 5 years
 
@@ -315,6 +345,7 @@ hp_avg|>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
 We only keep countries that are in the top rank for all five years.
 Among those 144 countries, Danmark has the highest average happiness
 score while Burundi has the lowest average happiness score in 5 years.
@@ -348,6 +379,18 @@ hp_avg_plot
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
+In general, countries in Europe, Australia, North and South America have
+higher average happiness score while countries in Africa and Middle East
+Asia has relatively lower average happiness score from 2015 to 2019.
+
+The geographic distribution of World Happiness Score is stable from 2015
+to 2019. European Countries such as Finland, Switzerland, and Danmark
+tend to have highest happiness score while African countires such as
+South Sudan and Central African Republic tend to have lowest happiness
+score. Also, countries in Europe, Australia, North and South America
+have higher happiness score while countries in Africa and Middle East
+Asia has relatively lower happiness score.
+
 # Q2: Which region has the highest and lowest happiness score?
 
 ## 2015
@@ -369,6 +412,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
 In year 2015, Australia and New Zealand has the highest happiness score
 while Sub-Saharan Africa has the lowest happiness score among 10
 regions.
@@ -392,6 +436,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
 In year 2016, Australia and New Zealand has the highest happiness score
 while Sub-Saharan Africa has the lowest happiness score among 10
 regions.
@@ -415,6 +460,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
 In year 2017, Australia and New Zealand has the highest happiness score
 while Sub-Saharan Africa has the lowest happiness score among 10
 regions.
@@ -438,6 +484,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
 In year 2018, Australia and New Zealand has the highest happiness score
 while Sub-Saharan Africa has the lowest happiness score among 10
 regions.
@@ -461,6 +508,7 @@ combined_happiness |>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
 In year 2019, Australia and New Zealand has the highest happiness score
 while Sub-Saharan Africa has the lowest happiness score among 10
 regions.
@@ -483,6 +531,7 @@ hp_avg|>
 ```
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+
 From 2015 to 2019, Australia and New Zealand has the highest average
 happiness score while Sub-Saharan Africa has the lowest average
 happiness score among 10 regions.
@@ -505,3 +554,20 @@ combined_happiness |>
     ## `.groups` argument.
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+
+According to the scatter plot, from 2015 to 2019, Australia and New
+Zealand has stable happiness scores and it’s the highest amnong 10
+regions. North America has second highest happiness score among 10
+regions with the highest happiness score in year 2015 and gradually
+decreasing trend. Western Europe has the third highest happiness score
+with an increasing trend in 5 years. Latin America and Caribbean has the
+fourth highest happiness score with a decreasing trend in 5 years.
+Eastern Asia has the fifth highest happiness score with a stable trend.
+Middle East and Northern Africa, Southeastern Asia, and Central and
+Eastern Europe have comparative happiness score from 2015 to 2017, but
+Central and Eastern Europe has a increasing trend and higher happiness
+score after year 2017 while the other two regions have a decreasing
+trend and lower happiness score after year 2017. Southern Asia and
+Sub-Saharan Africa has the second lowest and lowest happiness score in 5
+years, respectively. However, Sub-Saharan Africa has shown an increasing
+trend while Southern Asia has shown an decreasing trend since year 2017.

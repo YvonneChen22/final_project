@@ -23,9 +23,6 @@ combined_happiness = read.csv("./combined_happiness.csv") |>
 combined_happiness$region[combined_happiness$region == "Eastern Asian"] <- "Eastern Asia"
 ```
 
-
-
-
 Wordmap Preparation
 ```{r}
 iso_codes = countrycode::codelist[, c("un.name.en", "iso3c")]
@@ -99,7 +96,9 @@ cleanup <- theme(
 
 
 # Q1: Which country has the highest and lowest happiness score?
-In order to explore the distribution of ahppiniess score all over the world, we draw bar charts of happiness score for each year in descending order and categorize countries into different region.
+
+In order to explore the distribution of happiness score all over the world, we draw bar charts of happiness score for each year in descending order showing different region with color and legends. We also use heat map in world map to show the geographic distribution of happiness score over the world.
+
 ## 2015
 ### bar chat
 ```{r}
@@ -112,6 +111,7 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 In year 2015, Switzerland has the highest happiness score while Togo has the lowest happiness score among 158 countries.
 
 ### wordmap
@@ -131,6 +131,8 @@ hp_2015 <- worldjoin |>
 hp_2015
 ```
 
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2015.
+
 ## 2016
 ```{r}
 combined_happiness |>
@@ -142,6 +144,7 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 In year 2016, Denmark has the highest happiness score while Burundi has the lowest happiness score among 157 countries.
 
 ### wordmap
@@ -161,6 +164,8 @@ hp_2016 <- worldjoin |>
 hp_2016
 ```
 
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2016.
+
 ## 2017
 ### bar chat
 ```{r}
@@ -173,6 +178,7 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 In year 2017, Norway has the highest happiness score while Central African Republic has the lowest happiness score among 155 countries.
 
 ### wordmap
@@ -192,6 +198,7 @@ hp_2017 <- worldjoin |>
 hp_2017
 ```
 
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2017.
 
 ## 2018
 ### bar chart
@@ -205,6 +212,7 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 In year 2018, Finland has the highest happiness score while Burundi has the lowest happiness score among 156 countries.
 
 ### wordmap
@@ -224,6 +232,8 @@ hp_2018 <- worldjoin |>
 hp_2018
 ```
 
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2018.
+
 ## 2019
 ### bar chart
 ```{r}
@@ -236,6 +246,7 @@ combined_happiness |>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 In year 2019, Finland has the highest happiness score while South Sudan has the lowest happiness score among 156 countries.
 
 ### wordmap
@@ -254,6 +265,8 @@ hp_2019 <- worldjoin |>
 
 hp_2019
 ```
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2019.
 
 ## Average in 5 years
 ### bar chart
@@ -282,6 +295,7 @@ hp_avg|>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = "bottom")
 ```
+
 We only keep countries that are in the top rank for all five years. Among those 144 countries, Danmark has the highest average happiness score while Burundi has the lowest average happiness score in 5 years.
 
 ### wordmap
@@ -301,6 +315,9 @@ hp_avg_plot <- wold_avg |>
 hp_avg_plot
 ```
 
+In general, countries in Europe, Australia, North and South America have higher average happiness score while countries in Africa and Middle East Asia has relatively lower average happiness score from 2015 to 2019.
+
+The geographic distribution of World Happiness Score is stable from 2015 to 2019. European Countries such as Finland, Switzerland, and Danmark tend to have highest happiness score while African countires such as South Sudan and Central African Republic tend to have lowest happiness score. Also, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score.
 
 
 # Q2: Which region has the highest and lowest happiness score?
@@ -319,8 +336,8 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
-In year 2015, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
+In year 2015, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
 ## 2016
 ### bar chart
@@ -337,6 +354,7 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
+
 In year 2016, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
 
@@ -355,6 +373,7 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
+
 In year 2017, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
 
@@ -374,6 +393,7 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
+
 In year 2018, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
 
@@ -392,6 +412,7 @@ combined_happiness |>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
+
 In year 2019, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
 
 ## Average in 5 years
@@ -408,6 +429,7 @@ hp_avg|>
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = "none")
 ```
+
 From 2015 to 2019, Australia and New Zealand has the highest average happiness score while Sub-Saharan Africa has the lowest average happiness score among 10 regions.
 
 
@@ -426,6 +448,7 @@ combined_happiness |>
 
 ```
 
+According to the scatter plot, from 2015 to 2019, Australia and New Zealand has stable happiness scores and it's the highest amnong 10 regions. North America has second highest happiness score among 10 regions with the highest happiness score in year 2015 and gradually decreasing trend. Western Europe has the third highest happiness score with an increasing trend in 5 years. Latin America and Caribbean has the fourth highest happiness score with a decreasing trend in 5 years. Eastern Asia has the fifth highest happiness score with a stable trend. Middle East and Northern Africa, Southeastern Asia, and Central and Eastern Europe have comparative happiness score from 2015 to 2017, but Central and Eastern Europe has a increasing trend and higher happiness score after year 2017 while the other two regions have a decreasing trend and lower happiness score after year 2017. Southern Asia and Sub-Saharan Africa has the second lowest and lowest happiness score in 5 years, respectively. However, Sub-Saharan Africa has shown an increasing trend while Southern Asia has shown an decreasing trend since year 2017.
 
 
 
