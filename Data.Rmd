@@ -1,0 +1,134 @@
+---
+title: "Data"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Background Information of the datasets
+
+## Motivation
+Every fairy tale concludes with the prince and princess living happily ever after. These are our most innocent and sincere wishes. However, as modern individuals lament the mounting pressures of work and life, alongside the escalating issues of depression and other mental health disorders, our happiness seems elusive. Happiness has become a crucial measurement of our well-being as well as a nation’s success. It's a fundamental human right, just like health. Every person has the right to happiness; it is affecting us both mental and physical health.  It has also become an integral indicator for national policy and operational objective for
+governments.
+
+But how do we quantify happiness? What are the sources of our happiness? Are we truly happy or unhappy? Is the world happy? How can we enhance our level of happiness? These are the questions we seek to answer through this project. Understanding what drives happiness can help in formulating policies that improve the quality of life for citizens. By studying the factors that affect happiness, we can contribute to a multidisciplinary understanding of well-being, which in turn can inform a variety of practical applications aimed at improving people’s lives at both the individual and collective levels.
+
+## Data Acquisition
+We sourced our data from The World Happiness Report, first published in 2012. This report gathers surveys from a nationally-representative sample of individuals, inquiring about their life satisfaction and their views on six factors: income, health, having reliable support, freedom to make life decisions, generosity, and the absence of government corruption. It then ranked around 155-158 countries base on the happiness score collected each year. We chose to utilize The World Happiness Reports published between 2015 and 2019, the pre-COVID period. The data can be accessed [here](https://www.kaggle.com/datasets/unsdsn/world-happiness). Each year's report is available as a separate CSV file, resulting in a total of five datasets. Each dataset comprises various variables, necessitating data cleaning and merging for analysis.
+
+## Data merging and cleaning
+We imported five dataset into RStudio. In order to merge them, we need to make sure all datasets have the same variables. We first updated all variable to `snake cases`, removed the unwanted variables and added a `year` variable representing the year for each dataset. Because only `2015` and `2016` data recorded `region` for each `country,` we extracted the `country` and `region` variables into separate data frame and `left_join` it into `2017`, `2018` and `2019` by `country `. We then stack all five dataset into our final dataset using `bind_row`. We then check if there’s any missing or miscoded values. Because there are new counties entering into the survey and ranking in 2017, 2018 and 2019, with no region recorded, and the dataset records same country differently in each year. We manually updated the value using `mutate()`. The code is read as following:
+```{r}
+library(tidyverse)
+```
+
+```{r message=FALSE, warning=FALSE}
+data2015_df = read_csv("./data/2015.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2015)|>
+  select(- standard_error, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+data2016_df = read_csv("./data/2016.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2016)|>
+  select(- lower_confidence_interval, - upper_confidence_interval, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+region_df = data2015_df|>
+  select(country, region)
+
+data2017_df = read_csv("./data/2017.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2017)|>
+  select(- whisker_high, - whisker_low, -dystopia_residual)|>
+  select(-generosity, everything(), generosity)
+
+data2017_df = left_join(data2017_df, region_df)|>
+  select(year, country, region, everything())|>
+  mutate(
+    
+  )
+
+data2018_df = read_csv("./data/2018.csv")|>
+  janitor::clean_names()|>
+  mutate(
+    year=2018)|>
+  select(-generosity, everything(), generosity)
+
+data2018_df = left_join(data2018_df, region_df)|>
+  select(year, country, region, everything())|>
+  mutate(
+    perception_of_corruption = as.numeric(perception_of_corruption)
+  )
+
+data2019_df = read_csv("./data/2019.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2019)|>
+  select(-generosity, everything(), generosity)
+
+data2019_df = left_join(data2019_df, region_df)|>
+  select(year, country, region, everything())
+
+hap_df = bind_rows(data2015_df, data2016_df, data2017_df, data2018_df, data2019_df)|>
+  mutate(
+    region = if_else(country == "Taiwan Province of China", "Eastern Asia", region),
+     region = if_else(country == "Hong Kong S.A.R., China", "Eastern Asia", region),
+    region = if_else(country == "Belize", "Latin America and Caribbean", region),
+    region = if_else(country == "Somalia", "Sub-Saharan Africa", region),
+    region = if_else(country == "Namibia", "Sub-Saharan Africa", region),
+    region = if_else(country == "South Sudan", "Sub-Saharan Africa", region),
+    region = if_else(country == "Trinidad & Tobago", "Latin America and Caribbean", region),
+    region = if_else(country == "Northern Cyprus", "Western Europe", region),
+    region = if_else(country == "North Macedonia", "Central and Eastern Europe", region),
+    region = if_else(country == "Gambia", "Sub-Saharan Africa", region),
+    country = if_else(country == "Hong Kong S.A.R., China", "Hong Kong", country),
+    country = if_else(country == "Northern Cyprus", "North Cyprus", country),
+    country = if_else(country == "Somaliland region", "Somalia", country),
+    country = if_else(country == "Taiwan Province of China", "Taiwan", country),
+    country = if_else(country == "Trinidad & Tobago", "Trinidad and Tobago", country)
+    )
+
+write_csv(hap_df, "./data/combined_happiness.csv")
+```
+
+## Final Dataset Description
+The final dataset has `r nrow(hap_df)` observations. There are `r ncol(hap_df)` variables:
+
+`year`: The year of the surveys.
+
+`country`: Name of the countries.
+
+`region`: region of the countries. There are `r unique(hap_df$region) |> length()` regions in the Dataset.
+
+`rank`: Rank of the countries base on happiness score.
+
+`score`: Happiness Score of the countries, with 10 representing the best possible life and 0 being the lowest.
+
+`gdp_per_capita`: Measurement on  income and GDP per Capital, value ranges from 0 – 2.10.
+
+`social support`: Measurement on having someone to count on in times of trouble, value ranges from 0 to 1.65.
+
+`health_life_expectancy`: Measurement on healthy life expectancy, which also reflects mental and physical health, value ranges from 0 to 1.15.
+
+`freedom_to_make_choices`: Measurement on freedom to choose what you do with your life, which also reflects human rights. Human rights include the right to life and liberty, freedom from slavery and torture, freedom of opinion and expression, the right to work and education, and many more. Everyone is entitled to these rights without discrimination. Value ranges from 0 – 0.75.
+
+`perception_of_corruption`: Measurement on if people think there’s corruption widespread throughout the government and within businesses, and if people trust their governments and have trust in the benevolence of others. Values ranges from 0 – 0.6. Please note that higher scores representing lower perception of corruption and higher trust of the government.
+
+`generosity`: Measurement on if people donated money to the charity, which is a sense of positive community engagement. Value ranges from 0-0.85. 
+
+`year`, `country` and `region` is factor and categorical variables. All the other variables are numeric and continuous variables.
+
+Later in the data analysis, we also added the ISO3 code (`ISO3`) to the dataset for the purpose of outputting geographic plot.
+
+
+## Mission Statement
+Our mission is to conduct a comprehensive analysis of the factors influencing global happiness scores across the years 2015 to 2019. Through in-depth exploration and examination of Economic production (gdp per capita), social support, life expectancy, freedom, absence of corruption, and generosity, we aim to identify and understand the key determinants that contribute to varying happiness levels among nations during this period. By regression analysis, our goal is to unravel the relationships between happiness score and six factors. Other research questions help us know more about the distribution happiness score, and six factors, respectively. Ultimately, our research seeks to provide insights that can illuminate policy decisions and societal interventions, health system development fostering a deeper understanding of what drives happiness worldwide and how it evolves over time.
+
+
+
+
+
+
+[Back To Home](index.html)
