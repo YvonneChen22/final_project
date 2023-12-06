@@ -11,7 +11,7 @@
 
 
 
-<title>Other-Research-Questions</title>
+<title>Other Research Questions</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -32,6 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -252,7 +254,7 @@ $(document).ready(function () {
   <a href="Data.html">Data</a>
 </li>
 <li>
-  <a href="Regression_Analysis.html">Regression Analysis</a>
+  <a href="Regression_Analsyis.html">Regression Analysis</a>
 </li>
 <li>
   <a href="EDA.html">EDA</a>
@@ -284,12 +286,11 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Other Research Questions</h1>
 
 </div>
 
 
-<div id="other-research-questions" class="section level1">
-<h1>Other Research Questions</h1>
 <p>Import dataset</p>
 <pre class="r"><code>combined_happiness = read.csv(&quot;./combined_happiness.csv&quot;) |&gt;
   janitor::clean_names()
@@ -355,7 +356,6 @@ cleanup &lt;- theme(
   panel.background = element_rect(fill = &quot;white&quot;),
   plot.title = element_text(hjust = 0.5)
 )</code></pre>
-</div>
 <div id="q1-which-country-has-the-highest-and-lowest-happiness-score"
 class="section level1">
 <h1>Q1: Which country has the highest and lowest happiness score?</h1>
@@ -376,8 +376,7 @@ over the world.</p>
   labs(title = &quot;2015 World Happiness Score Rank&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-8-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>In year 2015, Switzerland has the highest happiness score while Togo
 has the lowest happiness score among 158 countries.</p>
 </div>
@@ -396,8 +395,7 @@ has the lowest happiness score among 158 countries.</p>
   cleanup
 
 hp_2015</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-9-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher happiness score while countries in Africa and Middle East
 Asia has relatively lower happiness score in 2015.</p>
@@ -413,8 +411,7 @@ Asia has relatively lower happiness score in 2015.</p>
   labs(title = &quot;2016 World Happiness Score Rank&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-10-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>In year 2016, Denmark has the highest happiness score while Burundi
 has the lowest happiness score among 157 countries.</p>
 <div id="wordmap-1" class="section level3">
@@ -432,8 +429,7 @@ has the lowest happiness score among 157 countries.</p>
   cleanup
 
 hp_2016</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-11-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher happiness score while countries in Africa and Middle East
 Asia has relatively lower happiness score in 2016.</p>
@@ -451,8 +447,7 @@ Asia has relatively lower happiness score in 2016.</p>
   labs(title = &quot;2017 World Happiness Score Rank&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-12-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>In year 2017, Norway has the highest happiness score while Central
 African Republic has the lowest happiness score among 155 countries.</p>
 </div>
@@ -471,8 +466,7 @@ African Republic has the lowest happiness score among 155 countries.</p>
   cleanup
 
 hp_2017</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-13-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher happiness score while countries in Africa and Middle East
 Asia has relatively lower happiness score in 2017.</p>
@@ -490,8 +484,7 @@ Asia has relatively lower happiness score in 2017.</p>
   labs(title = &quot;2018 World Happiness Score Rank&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-14-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>In year 2018, Finland has the highest happiness score while Burundi
 has the lowest happiness score among 156 countries.</p>
 </div>
@@ -510,8 +503,7 @@ has the lowest happiness score among 156 countries.</p>
   cleanup
 
 hp_2018</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-15-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher happiness score while countries in Africa and Middle East
 Asia has relatively lower happiness score in 2018.</p>
@@ -529,8 +521,7 @@ Asia has relatively lower happiness score in 2018.</p>
   labs(title = &quot;2019 World Happiness Score Rank&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-16-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>In year 2019, Finland has the highest happiness score while South
 Sudan has the lowest happiness score among 156 countries.</p>
 </div>
@@ -549,8 +540,7 @@ Sudan has the lowest happiness score among 156 countries.</p>
   cleanup
 
 hp_2019</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-17-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher happiness score while countries in Africa and Middle East
 Asia has relatively lower happiness score in 2019.</p>
@@ -583,8 +573,7 @@ hp_avg|&gt;
   labs(title = &quot;Average World Happiness Score Rank 2015-2019&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-18-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>We only keep countries that are in the top rank for all five years.
 Among those 144 countries, Danmark has the highest average happiness
 score while Burundi has the lowest average happiness score in 5
@@ -612,8 +601,7 @@ years.</p>
   cleanup
 
 hp_avg_plot</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-19-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>In general, countries in Europe, Australia, North and South America
 have higher average happiness score while countries in Africa and Middle
 East Asia has relatively lower average happiness score from 2015 to
@@ -646,8 +634,7 @@ class="section level1">
   labs(title = &quot;2015 World Happiness Score Rank&quot;, x = &quot;Regions&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-20-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>In year 2015, Australia and New Zealand has the highest happiness
 score while Sub-Saharan Africa has the lowest happiness score among 10
 regions.</p>
@@ -668,8 +655,7 @@ regions.</p>
   labs(title = &quot;2016 World Happiness Score Rank&quot;, x = &quot;Regions&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-21-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>In year 2016, Australia and New Zealand has the highest happiness
 score while Sub-Saharan Africa has the lowest happiness score among 10
 regions.</p>
@@ -690,8 +676,7 @@ regions.</p>
   labs(title = &quot;2017 World Happiness Score Rank&quot;, x = &quot;Regions&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-22-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>In year 2017, Australia and New Zealand has the highest happiness
 score while Sub-Saharan Africa has the lowest happiness score among 10
 regions.</p>
@@ -712,8 +697,7 @@ regions.</p>
   labs(title = &quot;2018 World Happiness Score Rank&quot;, x = &quot;Regions&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-23-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>In year 2018, Australia and New Zealand has the highest happiness
 score while Sub-Saharan Africa has the lowest happiness score among 10
 regions.</p>
@@ -734,8 +718,7 @@ regions.</p>
   labs(title = &quot;2019 World Happiness Score Rank&quot;, x = &quot;Regions&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-24-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>In year 2019, Australia and New Zealand has the highest happiness
 score while Sub-Saharan Africa has the lowest happiness score among 10
 regions.</p>
@@ -755,8 +738,7 @@ regions.</p>
   labs(title = &quot;Average World Happiness Score Rank 2015-2019&quot;, x = &quot;Countries&quot;, y = &quot;Happiness Score&quot;) +
   scale_x_discrete(labels = label_wrap_gen(width = 12)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-25-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>From 2015 to 2019, Australia and New Zealand has the highest average
 happiness score while Sub-Saharan Africa has the lowest average
 happiness score among 10 regions.</p>
@@ -779,8 +761,7 @@ regions from 2015 – 2019?</h1>
   labs(title = &quot;World Happiness Score Trend in 10 Regions&quot;, x = &quot;year&quot;, y = &quot;Happiness Score&quot;)</code></pre>
 <pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can
 ## override using the `.groups` argument.</code></pre>
-<p><img
-src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-26-1.png" /><!-- --></p>
+<p><img src="Other-Research-Questions_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>According to the scatter plot, from 2015 to 2019, Australia and New
 Zealand has stable happiness scores and it’s the highest amnong 10
 regions. North America has second highest happiness score among 10
