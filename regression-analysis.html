@@ -11,7 +11,7 @@
 
 
 
-<title>Regression Analysis</title>
+<title>regression-analysis</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,14 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -224,69 +219,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -294,16 +226,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -362,17 +284,15 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Regression Analysis</h1>
 
 </div>
 
 
-<div id="part-1-which-factors-impact-the-happiness-score-the-most"
-class="section level1">
-<h1>Part 1: Which factors impact the happiness score the most?</h1>
-<div id="multiple-linear-regression-for-happiness-score-prediction"
-class="section level2">
-<h2>Multiple Linear Regression for Happiness Score Prediction</h2>
+<div id="regression-analysis" class="section level1">
+<h1>Regression Analysis</h1>
+<p>Tingyi Li 2023-12-03</p>
+<p>#Part 1</p>
+<p>#Multiple Linear Regression for Happiness Score Prediction</p>
 <pre class="r"><code>happiness_score = read_csv(&quot;./Data/combined_happiness.csv&quot;)</code></pre>
 <pre><code>## Rows: 782 Columns: 11
 ## ── Column specification ─────────────────────────────
@@ -388,9 +308,9 @@ class="section level2">
 predicted_model|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -465,16 +385,9 @@ expectancy”, and “Social support” are also significant contributors to
 happiness in order of their estimates. “Perception of corruption” and
 “Generosity” also significantly impact happiness but to a lesser extent,
 based on their estimates and p-values.</p>
-</div>
-</div>
-<div id="part-2-does-the-result-change-over-time"
-class="section level1">
-<h1>Part 2: Does the result change over time?</h1>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-2015"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-2015</h2>
+<p>#Part 2</p>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+2015</p>
 <pre class="r"><code>data_2015 = happiness_score|&gt;
   filter(year == 2015)
 
@@ -484,9 +397,9 @@ model2015 = lm(formula = score ~ gdp_per_capita + social_support + health_life_e
 model2015|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -563,12 +476,8 @@ indicating that there were sufficient evidences to show their essential
 effects on happiness score. However, “perception of corruption” and
 “generosity” appeared to have p-values larger than 0.05 indicating that
 they didn’t have significant impact on happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-2016"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-2016</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+2016</p>
 <pre class="r"><code>data_2016 = happiness_score|&gt;
   filter(year == 2016)
 
@@ -580,10 +489,10 @@ model2016|&gt;
   knitr::kable()</code></pre>
 <table>
 <colgroup>
-<col width="41%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
-<col width="15%" />
+<col width="16%" />
 <col width="14%" />
 </colgroup>
 <thead>
@@ -660,12 +569,8 @@ that there were sufficient evidences to show their effects on happiness
 score. However, variable “generosity” appeared to have p-values
 0.6602362, which is larger than 0.05, indicating that it didn’t exhibit
 significant impact to 2016’s happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-2017"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-2017</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+2017</p>
 <pre class="r"><code>data_2017 = happiness_score|&gt;
   filter(year == 2017)
 
@@ -675,9 +580,9 @@ model2017 = lm(formula = score ~ gdp_per_capita + social_support + health_life_e
 model2017|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -758,12 +663,8 @@ show a significant impact on happiness score. However, variable
 “perception of corruption” and “generosity” appeared to have p-values
 larger than 0.05, indicating that they didn’t exhibit significant impact
 to 2017’s happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-2018"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-2018</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+2018</p>
 <pre class="r"><code>data_2018 = happiness_score|&gt;
   filter(year == 2018)
 
@@ -773,9 +674,9 @@ model2018 = lm(formula = score ~ gdp_per_capita + social_support + health_life_e
 model2018|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -853,12 +754,8 @@ impacts on happiness score in 2018. However, variable “perception of
 corruption” and “generosity” appeared to have p-values larger than 0.05,
 indicating that they didn’t exhibit significant impact to 2018’s
 happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-2019"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-2019</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+2019</p>
 <pre class="r"><code>data_2019 = happiness_score|&gt;
   filter(year == 2019)
 
@@ -868,9 +765,9 @@ model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_e
 model2019|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -957,15 +854,9 @@ choices” appeared to make the greatest impact on the happiness score.
 “health life expectancy” also impacted significantly on the happiness
 score since it exhibited the second or the third largest coefficient in
 the linear regression model from 2016 to 2019.</p>
-</div>
-</div>
-<div id="part-3-does-the-result-vary-by-region" class="section level1">
-<h1>Part 3: Does the result vary by region?</h1>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-central-and-eastern-europe"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in Central
-and Eastern Europe</h2>
+<p>#Part 3</p>
+<p>#Multiple linear Regression for Happiness Score Prediction in Central
+and Eastern Europe</p>
 <pre class="r"><code>central_east = happiness_score|&gt;
   filter(region == &quot;Central and Eastern Europe&quot;)
 
@@ -975,9 +866,9 @@ model1 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model1|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1056,12 +947,8 @@ Variables “health life expectancy”, “perception of corruption” and
 these variables did not exhibit significant p-values(&gt;0.05)
 indicating that it was not significant enough to tell that they had
 impact on happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-eastern-asia"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in Eastern
-Asia</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in Eastern
+Asia</p>
 <pre class="r"><code>east_asia = happiness_score|&gt;
   filter(region == &quot;Eastern Asia&quot;)
 
@@ -1071,9 +958,9 @@ model2 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model2|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1150,12 +1037,8 @@ indicating that it had essential impact on happiness score. However,
 other variables exhibited p-values larger than 0.05 showing that it was
 not significant enough to tell that they had impacts on happiness
 score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-latin-america-and-caribbean"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in Latin
-America and Caribbean</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in Latin
+America and Caribbean</p>
 <pre class="r"><code>latin_caribbean = happiness_score|&gt;
   filter(region == &quot;Latin America and Caribbean&quot;)
 
@@ -1165,9 +1048,9 @@ model3 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model3|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1248,12 +1131,8 @@ happiness score. However, variables “perception of corruption” and
 “generosity” appear to have p-values(&gt;0.05) indicating that it was
 not significant enough to tell that they had impacts on happiness
 score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-middle-east-and-northern-africa"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in Middle
-East and Northern Africa</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in Middle
+East and Northern Africa</p>
 <pre class="r"><code>east_africa = happiness_score|&gt;
   filter(region == &quot;Middle East and Northern Africa&quot;)
 
@@ -1263,9 +1142,9 @@ model4 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model4|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1344,12 +1223,8 @@ outstanding impact on happiness score. However, variable “perception of
 corruption” appeared to have p-values 0.5785945, which is larger than
 0.05, indicating that it didn’t exhibit significant impact to the
 happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-north-america"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in North
-America</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in North
+America</p>
 <pre class="r"><code>north_america = happiness_score|&gt;
   filter(region == &quot;North America&quot;)
 
@@ -1359,9 +1234,9 @@ model5 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model5|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1432,12 +1307,8 @@ model5|&gt;
 variables exhibited significant p-value since all their p-values were
 greater than 0.05 indicating that none of the variables exhibit
 significant impact to the happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-southeastern-asia"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-Southeastern Asia</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+Southeastern Asia</p>
 <pre class="r"><code>southeastern_asia = happiness_score|&gt;
   filter(region == &quot;Southeastern Asia&quot;)
 
@@ -1447,9 +1318,9 @@ model6 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model6|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1523,12 +1394,8 @@ substantial impact on happiness scrore. Despite “gdp per capita”, none
 of other variables exhibited significant p-values indicating that we did
 not have sufficient evidence to show their impact on happiness
 score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-southern-asia"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-Southern Asia</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+Southern Asia</p>
 <pre class="r"><code>southern_asia = happiness_score|&gt;
   filter(region == &quot;Southern Asia&quot;)
 
@@ -1538,9 +1405,9 @@ model7 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model7|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1612,12 +1479,8 @@ model7|&gt;
 with extremely high coefficient (8.8312157) indicating that among all 6
 variables, “perception of corruption” had the largest impact on
 happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-sub-saharan-africa"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in
-Sub-Saharan Africa</h2>
+<p>#Multiple linear Regression for Happiness Score Prediction in
+Sub-Saharan Africa</p>
 <pre class="r"><code>sub_africa = happiness_score|&gt;
   filter(region == &quot;Sub-Saharan Africa&quot;)
 
@@ -1627,9 +1490,9 @@ model8 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model8|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="40%" />
+<col width="39%" />
 <col width="15%" />
 <col width="14%" />
 <col width="15%" />
@@ -1705,13 +1568,8 @@ on happiness score since they had relatively large coefficient and
 significant p-value(&lt;0.001). However, “health life expectancy” and
 “perception of corruption” did not appear to have significant p-value
 (&gt;0.05) indicating that they did not have significant impact on
-happiness score.</p>
-</div>
-<div
-id="multiple-linear-regression-for-happiness-score-prediction-in-western-europe"
-class="section level2">
-<h2>Multiple linear Regression for Happiness Score Prediction in Western
-Europe</h2>
+happiness score. #Multiple linear Regression for Happiness Score
+Prediction in Western Europe</p>
 <pre class="r"><code>west_europe = happiness_score|&gt;
   filter(region == &quot;Western Europe&quot;)
 
@@ -1721,9 +1579,9 @@ model9 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expe
 model9|&gt;
   broom::tidy()|&gt;
   knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="42%" />
+<col width="40%" />
 <col width="14%" />
 <col width="14%" />
 <col width="14%" />
@@ -1811,14 +1669,10 @@ Eastern European and Latin American and Caribbean countries
 countries.”perception of corruption” played a substantial role on
 impacting the happiness score in southern Asian countries and eastern
 Asian countries.</p>
-<p><a href="index.html">Back To Home</a></p>
-</div>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -1851,35 +1705,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
