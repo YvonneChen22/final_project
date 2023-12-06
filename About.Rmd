@@ -1,0 +1,59 @@
+---
+title: "About US"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Team Member
+
+## Yvonne Chen (sc5078)
+<img src="images/WechatIMG878.jpg" style="width:50%">
+
+Mailman School of Public Health, Columbia University
+
+Second-year student in MPH Biostatistics
+
+Certificate: Comparative Effectiveness Outcomes Research
+
+Hobby: Baking, Cooking, Photography
+
+
+## Tingyi Li (tl3195)
+<img src="images/WechatIMG76932.jpg" style="width:50%">
+
+Mailman School of Public Health, Columbia University
+
+Second-year student in MPH Biostatistics
+
+Certificate: Comparative Effectiveness Outcomes Research
+
+Hobby: Drum Set
+
+## Tianyi Wang (tw2918)
+<img src="images/WechatIMG242.jpg" style="width:50%">
+
+Mailman School of Public Health, Columbia University
+
+Second-year student in MPH Biostatistics
+
+Certificate: Applied Biostatistic and Public health data science
+
+Hobby: Free Diving, Horseback Riding
+
+## Ruyi Chen (rc3520)
+<img src="images/WechatIMG253.jpg" style="width:50%">
+
+Mailman School of Public Health, Columbia University
+
+Second-year student in Pharmaceutical Statistics
+
+Hobby: Dancing
+
+
+
+[Back To Home](index.html)
+
+
+
