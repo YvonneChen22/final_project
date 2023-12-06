@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Regression Analysis</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="About.html">About</a>
+</li>
+<li>
+  <a href="Data.html">Data</a>
+</li>
+<li>
+  <a href="Regression_Analysis.html">Regression Analysis</a>
+</li>
+<li>
+  <a href="EDA.html">EDA</a>
+</li>
+<li>
+  <a href="Final-Report.html">Final Report</a>
+</li>
+<li>
+  <a href="https://tianyiw44.shinyapps.io/p8105_final_shiny/">Shiny APP</a>
+</li>
+<li>
+  <a href="mailto:&lt;sc5078@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/YvonneChen22/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Regression Analysis</h1>
+
+</div>
+
+
+<div id="part-1-which-factors-impact-the-happiness-score-the-most"
+class="section level1">
+<h1>Part 1: Which factors impact the happiness score the most?</h1>
+<div id="multiple-linear-regression-for-happiness-score-prediction"
+class="section level2">
+<h2>Multiple Linear Regression for Happiness Score Prediction</h2>
+<pre class="r"><code>happiness_score = read_csv(&quot;./Data/combined_happiness.csv&quot;)</code></pre>
+<pre><code>## Rows: 782 Columns: 11
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): country, region
+## dbl (9): year, rank, score, gdp_per_capita, social_support, health_life_expe...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = happiness_score)
+
+predicted_model|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.1750674</td>
+<td align="right">0.0799098</td>
+<td align="right">27.219021</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">1.1359972</td>
+<td align="right">0.0841455</td>
+<td align="right">13.500396</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.6458962</td>
+<td align="right">0.0809226</td>
+<td align="right">7.981656</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.0127106</td>
+<td align="right">0.1320119</td>
+<td align="right">7.671359</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.4812709</td>
+<td align="right">0.1634584</td>
+<td align="right">9.062068</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.8582286</td>
+<td align="right">0.2234402</td>
+<td align="right">3.840976</td>
+<td align="right">0.0001326</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.5924416</td>
+<td align="right">0.1757022</td>
+<td align="right">3.371851</td>
+<td align="right">0.0007837</td>
+</tr>
+</tbody>
+</table>
+<p>The variable “freedom to make life choices” exhibits the largest
+coefficient (1.4812709) with a highly significant
+p-value(&lt;0.0000001), indicating it exerts the most substantial effect
+on happiness scores. Following this, “GDP per capita”, “Health life
+expectancy”, and “Social support” are also significant contributors to
+happiness in order of their estimates. “Perception of corruption” and
+“Generosity” also significantly impact happiness but to a lesser extent,
+based on their estimates and p-values.</p>
+</div>
+</div>
+<div id="part-2-does-the-result-change-over-time"
+class="section level1">
+<h1>Part 2: Does the result change over time?</h1>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-2015"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+2015</h2>
+<pre class="r"><code>data_2015 = happiness_score|&gt;
+  filter(year == 2015)
+
+model2015 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2015)
+
+model2015|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.8601849</td>
+<td align="right">0.1904824</td>
+<td align="right">9.7656541</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.8606572</td>
+<td align="right">0.2203113</td>
+<td align="right">3.9065501</td>
+<td align="right">0.0001409</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">1.4088916</td>
+<td align="right">0.2226751</td>
+<td align="right">6.3271187</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">0.9753090</td>
+<td align="right">0.3162930</td>
+<td align="right">3.0835619</td>
+<td align="right">0.0024325</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.3334329</td>
+<td align="right">0.3850157</td>
+<td align="right">3.4633211</td>
+<td align="right">0.0006944</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.7845381</td>
+<td align="right">0.4365328</td>
+<td align="right">1.7972032</td>
+<td align="right">0.0743018</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.3889329</td>
+<td align="right">0.3910029</td>
+<td align="right">0.9947057</td>
+<td align="right">0.3214707</td>
+</tr>
+</tbody>
+</table>
+<p>In 2015, the variable “social support” exhibited the largest
+coefficient (1.4088916) with the lowest p-value(&lt;0.0000001) among all
+variables. This indicated that it performed the most substantial effect
+on happiness score in 2015. Following “social support”, “freedom to make
+life choices”, “health life expectancy” and “gdp per capita” also
+appeared to have relatively high estimates with significant p-values ,
+indicating that there were sufficient evidences to show their essential
+effects on happiness score. However, “perception of corruption” and
+“generosity” appeared to have p-values larger than 0.05 indicating that
+they didn’t have significant impact on happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-2016"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+2016</h2>
+<pre class="r"><code>data_2016 = happiness_score|&gt;
+  filter(year == 2016)
+
+model2016 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2016)
+
+model2016|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="41%" />
+<col width="14%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.1902936</td>
+<td align="right">0.1583237</td>
+<td align="right">13.8342722</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.7214128</td>
+<td align="right">0.2171212</td>
+<td align="right">3.3226274</td>
+<td align="right">0.0011204</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">1.2297543</td>
+<td align="right">0.2297496</td>
+<td align="right">5.3525847</td>
+<td align="right">0.0000003</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.4364028</td>
+<td align="right">0.3489120</td>
+<td align="right">4.1168054</td>
+<td align="right">0.0000632</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.5139349</td>
+<td align="right">0.3879659</td>
+<td align="right">3.9022369</td>
+<td align="right">0.0001435</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.9189270</td>
+<td align="right">0.4647615</td>
+<td align="right">1.9772014</td>
+<td align="right">0.0498518</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.1594941</td>
+<td align="right">0.3621060</td>
+<td align="right">0.4404626</td>
+<td align="right">0.6602362</td>
+</tr>
+</tbody>
+</table>
+<p>In 2016, the variable “freedom to make life choices” exhibited the
+largest coefficient (1.5139349) with a significant p-value(0.0001435),
+while the variable “health life expectancy” and “social support”
+exhibited the second and the third largest coefficient and more
+significant p-values(&lt;0.0001) in comparison to variable “freedom to
+make life choices”. This indicated that they all exhibited a very
+outstanding impact on happiness score in 2016. Following them,
+“perception of corruption” and “gdp per capita” also appeared to have
+relatively high estimates with p-values smaller than 0.05, indicating
+that there were sufficient evidences to show their effects on happiness
+score. However, variable “generosity” appeared to have p-values
+0.6602362, which is larger than 0.05, indicating that it didn’t exhibit
+significant impact to 2016’s happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-2017"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+2017</h2>
+<pre class="r"><code>data_2017 = happiness_score|&gt;
+  filter(year == 2017)
+
+model2017 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2017)
+
+model2017|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.7430289</td>
+<td align="right">0.1873581</td>
+<td align="right">9.303195</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.7844334</td>
+<td align="right">0.2045131</td>
+<td align="right">3.835615</td>
+<td align="right">0.0001849</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">1.1177711</td>
+<td align="right">0.2020608</td>
+<td align="right">5.531856</td>
+<td align="right">0.0000001</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.2888803</td>
+<td align="right">0.3215255</td>
+<td align="right">4.008640</td>
+<td align="right">0.0000965</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.4757152</td>
+<td align="right">0.3425093</td>
+<td align="right">4.308541</td>
+<td align="right">0.0000298</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.8266072</td>
+<td align="right">0.4843307</td>
+<td align="right">1.706700</td>
+<td align="right">0.0899751</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.3807181</td>
+<td align="right">0.3293271</td>
+<td align="right">1.156049</td>
+<td align="right">0.2495240</td>
+</tr>
+</tbody>
+</table>
+<p>In 2017, the variable “freedom to make life choices” and “health life
+expectancy” exhibited the largest 2 coefficient (1.4757152) and
+(1.2888803) with significant p-values (0.0000298) and (0.0000965)
+respectively, while the variable “social support” exhibited the third
+largest coefficient and more significant p-values(&lt;0.000001) in
+comparison to variable “freedom to make life choices” and “health life
+expectancy”. This indicated that they all exhibited a very outstanding
+impacts on happiness score in 2017. Following them, “gdp per capita”
+also appeared to have relatively high estimates (0.7844334) with
+p-values (0.0001849), indicating that there were sufficient evidences to
+show a significant impact on happiness score. However, variable
+“perception of corruption” and “generosity” appeared to have p-values
+larger than 0.05, indicating that they didn’t exhibit significant impact
+to 2017’s happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-2018"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+2018</h2>
+<pre class="r"><code>data_2018 = happiness_score|&gt;
+  filter(year == 2018)
+
+model2018 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2018)
+
+model2018|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.8234561</td>
+<td align="right">0.1977108</td>
+<td align="right">9.222845</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.9017459</td>
+<td align="right">0.2423630</td>
+<td align="right">3.720642</td>
+<td align="right">0.0002816</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">1.1150219</td>
+<td align="right">0.2117195</td>
+<td align="right">5.266505</td>
+<td align="right">0.0000005</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">0.9671218</td>
+<td align="right">0.3425058</td>
+<td align="right">2.823666</td>
+<td align="right">0.0054021</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.3984419</td>
+<td align="right">0.3185447</td>
+<td align="right">4.390096</td>
+<td align="right">0.0000214</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.7277888</td>
+<td align="right">0.5277904</td>
+<td align="right">1.378935</td>
+<td align="right">0.1699951</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.5235668</td>
+<td align="right">0.4717544</td>
+<td align="right">1.109829</td>
+<td align="right">0.2688726</td>
+</tr>
+</tbody>
+</table>
+<p>In 2018, the variable “freedom to make life choices” and “social
+support” exhibited the largest 2 coefficient (1.3984419) and (1.1150219)
+with significant p-values (0.0000214) and (0.0000005) respectively,
+indicating that they play very substantial job on impacting happiness
+score. Following them, the variables “health life expectancy” and “gdp
+per capita” exhibited relatively large coefficients with significant
+p-values(&lt;0.01), indicating that they also exhibited very outstanding
+impacts on happiness score in 2018. However, variable “perception of
+corruption” and “generosity” appeared to have p-values larger than 0.05,
+indicating that they didn’t exhibit significant impact to 2018’s
+happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-2019"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+2019</h2>
+<pre class="r"><code>data_2019 = happiness_score|&gt;
+  filter(year == 2019)
+
+model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2019)
+
+model2019|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.7952202</td>
+<td align="right">0.2110734</td>
+<td align="right">8.5051942</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.7753716</td>
+<td align="right">0.2182254</td>
+<td align="right">3.5530776</td>
+<td align="right">0.0005103</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">1.1241916</td>
+<td align="right">0.2369001</td>
+<td align="right">4.7454252</td>
+<td align="right">0.0000048</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.0781427</td>
+<td align="right">0.3345385</td>
+<td align="right">3.2227764</td>
+<td align="right">0.0015596</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.4548324</td>
+<td align="right">0.3753378</td>
+<td align="right">3.8760610</td>
+<td align="right">0.0001587</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.9722802</td>
+<td align="right">0.5423607</td>
+<td align="right">1.7926818</td>
+<td align="right">0.0750526</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.4897834</td>
+<td align="right">0.4977455</td>
+<td align="right">0.9840036</td>
+<td align="right">0.3267089</td>
+</tr>
+</tbody>
+</table>
+<p>In 2019, the variable “freedom to make life choices” and “social
+support” exhibited the largest 2 coefficient (1.4548324) and (1.1241916)
+with significant p-values (0.0001587) and (0.0000048) respectively,
+indicating that they play very substantial job on impacting happiness
+score. Following them, the variables “health life expectancy” and “gdp
+per capita” exhibited relatively large coefficients with significant
+p-values(&lt;0.01), indicating that they also exhibited very outstanding
+impacts on happiness score in 2019. However, variable “perception of
+corruption” and “generosity” appeared to have p-values larger than 0.05,
+indicating that they didn’t exhibit significant impact to 2019’s
+happiness score.</p>
+<p>According to the linear regressions performed separately for each
+year from 2015 to 2019, the main factor that impacted the happiness
+score changed over time. In 2015, “social support” had the most
+substantial impact on the happiness score, and its impact kept being
+significant until 2019. In the following 4 years, “freedom to make life
+choices” appeared to make the greatest impact on the happiness score.
+“health life expectancy” also impacted significantly on the happiness
+score since it exhibited the second or the third largest coefficient in
+the linear regression model from 2016 to 2019.</p>
+</div>
+</div>
+<div id="part-3-does-the-result-vary-by-region" class="section level1">
+<h1>Part 3: Does the result vary by region?</h1>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-central-and-eastern-europe"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in Central
+and Eastern Europe</h2>
+<pre class="r"><code>central_east = happiness_score|&gt;
+  filter(region == &quot;Central and Eastern Europe&quot;)
+
+model1 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = central_east)
+
+model1|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">3.1506152</td>
+<td align="right">0.3761585</td>
+<td align="right">8.3757648</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">1.0993611</td>
+<td align="right">0.2033891</td>
+<td align="right">5.4052129</td>
+<td align="right">0.0000003</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.5447398</td>
+<td align="right">0.1437145</td>
+<td align="right">3.7904299</td>
+<td align="right">0.0002240</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">-0.1987347</td>
+<td align="right">0.4097214</td>
+<td align="right">-0.4850485</td>
+<td align="right">0.6284110</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.7050905</td>
+<td align="right">0.3442244</td>
+<td align="right">4.9534273</td>
+<td align="right">0.0000021</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">-0.5976465</td>
+<td align="right">0.5501586</td>
+<td align="right">-1.0863167</td>
+<td align="right">0.2792328</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.6492740</td>
+<td align="right">0.5101488</td>
+<td align="right">1.2727149</td>
+<td align="right">0.2052593</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Central and Eastern European countries,
+variables “freedom to make life choices” exhibited the largest
+coefficient(1.7050905) with significant p-value(0.0000021) indicating
+that it impacted substantially on happiness score. Meanwhile, variables
+“gdp per capita” and “social support” exhibited relatively high
+coefficients (1.0993611) and (0.5447398) respectively with significant
+p-value (&lt;0.001) showing their essential impact on happiness score.
+Variables “health life expectancy”, “perception of corruption” and
+“generosity” exhibited smaller and even negative coefficients; however,
+these variables did not exhibit significant p-values(&gt;0.05)
+indicating that it was not significant enough to tell that they had
+impact on happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-eastern-asia"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in Eastern
+Asia</h2>
+<pre class="r"><code>east_asia = happiness_score|&gt;
+  filter(region == &quot;Eastern Asia&quot;)
+
+model2 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_asia)
+
+model2|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.6698077</td>
+<td align="right">0.9885689</td>
+<td align="right">0.6775529</td>
+<td align="right">0.5048144</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">2.6321054</td>
+<td align="right">0.3987773</td>
+<td align="right">6.6004398</td>
+<td align="right">0.0000010</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.1680339</td>
+<td align="right">0.2050669</td>
+<td align="right">0.8194102</td>
+<td align="right">0.4209627</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.5122195</td>
+<td align="right">0.7333569</td>
+<td align="right">2.0620513</td>
+<td align="right">0.0506769</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.8238357</td>
+<td align="right">0.9140536</td>
+<td align="right">1.9953269</td>
+<td align="right">0.0579853</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">-6.1001405</td>
+<td align="right">1.5633140</td>
+<td align="right">-3.9020571</td>
+<td align="right">0.0007172</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.8764310</td>
+<td align="right">0.8352973</td>
+<td align="right">1.0492444</td>
+<td align="right">0.3049665</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Eastern Asian countries, variable “perception
+of corruption” exhibited extremely high coefficient (-6.1001405) with a
+significant p-value(0.0007172) indicating that “perception of
+corruption” had extremely substantial negative impact on happiness
+score. Variable “gdp per capita” exhibited the second highest
+coefficient (2.6321054) with a significant p-value (0.0000010)
+indicating that it had essential impact on happiness score. However,
+other variables exhibited p-values larger than 0.05 showing that it was
+not significant enough to tell that they had impacts on happiness
+score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-latin-america-and-caribbean"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in Latin
+America and Caribbean</h2>
+<pre class="r"><code>latin_caribbean = happiness_score|&gt;
+  filter(region == &quot;Latin America and Caribbean&quot;)
+
+model3 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = latin_caribbean)
+
+model3|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.9870953</td>
+<td align="right">0.3603714</td>
+<td align="right">8.2889347</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">1.4869935</td>
+<td align="right">0.2138900</td>
+<td align="right">6.9521417</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">-0.6315397</td>
+<td align="right">0.2278693</td>
+<td align="right">-2.7714998</td>
+<td align="right">0.0066120</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.7455082</td>
+<td align="right">0.3819569</td>
+<td align="right">4.5699082</td>
+<td align="right">0.0000135</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">2.4568168</td>
+<td align="right">0.3534921</td>
+<td align="right">6.9501327</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">1.3409006</td>
+<td align="right">0.9170861</td>
+<td align="right">1.4621317</td>
+<td align="right">0.1467204</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">-0.3165373</td>
+<td align="right">0.5087516</td>
+<td align="right">-0.6221843</td>
+<td align="right">0.5351824</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Latin American and Caribbean countries,
+variable “freedom to make life choices” had the most significant impact
+on happiiness score since it exhibited the highest
+coefficient(2.4568168) with extremely significant p-value
+(&lt;0.000001). Following this, variables “health life expectancy” and
+“gdp per capita” exhibited relatively high coefficients (1.7455082) and
+(1.4869935) respectively with significant p-values indicating their
+essential impact on happiness score. Variable “social support” exhibited
+a negative coefficient “-0.6315397” with a significant p-value
+(0.0066120) indicating that “social support” had negative impact on
+happiness score. However, variables “perception of corruption” and
+“generosity” appear to have p-values(&gt;0.05) indicating that it was
+not significant enough to tell that they had impacts on happiness
+score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-middle-east-and-northern-africa"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in Middle
+East and Northern Africa</h2>
+<pre class="r"><code>east_africa = happiness_score|&gt;
+  filter(region == &quot;Middle East and Northern Africa&quot;)
+
+model4 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_africa)
+
+model4|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.5472699</td>
+<td align="right">0.2567575</td>
+<td align="right">6.0261911</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">1.5506958</td>
+<td align="right">0.2511559</td>
+<td align="right">6.1742356</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.4364518</td>
+<td align="right">0.2065005</td>
+<td align="right">2.1135633</td>
+<td align="right">0.0373830</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">2.0670148</td>
+<td align="right">0.4620345</td>
+<td align="right">4.4737244</td>
+<td align="right">0.0000229</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">1.3532650</td>
+<td align="right">0.4613435</td>
+<td align="right">2.9333131</td>
+<td align="right">0.0042752</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">0.3720748</td>
+<td align="right">0.6673868</td>
+<td align="right">0.5575099</td>
+<td align="right">0.5785945</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">-1.4347645</td>
+<td align="right">0.4915314</td>
+<td align="right">-2.9189679</td>
+<td align="right">0.0044584</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Middle Eastern and Northern African countries,
+variables “health life expectancy” exhibited the largest coefficient
+(2.0670148) with a significant p-value(0.0000229), while the variable
+“gdp per capita” exhibited the second largest coefficient and more
+significant p-values(&lt;0.0001) in comparison to variable “health life
+expectancy”. The variables “generosity”,“freedom to make life choices”
+and “social support” also exhibited relatively large coefficient with
+significant p-value. This indicated that they all exhibited a very
+outstanding impact on happiness score. However, variable “perception of
+corruption” appeared to have p-values 0.5785945, which is larger than
+0.05, indicating that it didn’t exhibit significant impact to the
+happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-north-america"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in North
+America</h2>
+<pre class="r"><code>north_america = happiness_score|&gt;
+  filter(region == &quot;North America&quot;)
+
+model5 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = north_america)
+
+model5|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">5.7461328</td>
+<td align="right">1.1568751</td>
+<td align="right">4.9669432</td>
+<td align="right">0.0156747</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.2906872</td>
+<td align="right">0.4853376</td>
+<td align="right">0.5989381</td>
+<td align="right">0.5914238</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">-0.2790530</td>
+<td align="right">0.1790157</td>
+<td align="right">-1.5588190</td>
+<td align="right">0.2169302</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">0.4041180</td>
+<td align="right">0.4999375</td>
+<td align="right">0.8083371</td>
+<td align="right">0.4780512</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">0.9868637</td>
+<td align="right">0.8267570</td>
+<td align="right">1.1936563</td>
+<td align="right">0.3183984</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">1.4273085</td>
+<td align="right">0.5532336</td>
+<td align="right">2.5799383</td>
+<td align="right">0.0817842</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.4721823</td>
+<td align="right">0.4867702</td>
+<td align="right">0.9700313</td>
+<td align="right">0.4035808</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in North American countries, none of the 6
+variables exhibited significant p-value since all their p-values were
+greater than 0.05 indicating that none of the variables exhibit
+significant impact to the happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-southeastern-asia"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+Southeastern Asia</h2>
+<pre class="r"><code>southeastern_asia = happiness_score|&gt;
+  filter(region == &quot;Southeastern Asia&quot;)
+
+model6 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southeastern_asia)
+
+model6|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">3.5557237</td>
+<td align="right">0.7682308</td>
+<td align="right">4.6284577</td>
+<td align="right">0.0000442</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">1.6457687</td>
+<td align="right">0.3325444</td>
+<td align="right">4.9490193</td>
+<td align="right">0.0000165</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.3338875</td>
+<td align="right">0.3197225</td>
+<td align="right">1.0443039</td>
+<td align="right">0.3031200</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">0.7927899</td>
+<td align="right">0.5905490</td>
+<td align="right">1.3424625</td>
+<td align="right">0.1876252</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">-0.9335115</td>
+<td align="right">1.0718734</td>
+<td align="right">-0.8709158</td>
+<td align="right">0.3894160</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">-0.6520931</td>
+<td align="right">0.6148682</td>
+<td align="right">-1.0605413</td>
+<td align="right">0.2957725</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.0954657</td>
+<td align="right">0.4326026</td>
+<td align="right">0.2206775</td>
+<td align="right">0.8265568</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Southeastern Asian countries, only variable
+“gdp per capita” exhibited relatively high coefficient (1.6457687) with
+significant p-value (0.0000165) indicating that “gdp per capita” had
+substantial impact on happiness scrore. Despite “gdp per capita”, none
+of other variables exhibited significant p-values indicating that we did
+not have sufficient evidence to show their impact on happiness
+score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-southern-asia"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+Southern Asia</h2>
+<pre class="r"><code>southern_asia = happiness_score|&gt;
+  filter(region == &quot;Southern Asia&quot;)
+
+model7 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southern_asia)
+
+model7|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.9020228</td>
+<td align="right">0.3943552</td>
+<td align="right">7.3589065</td>
+<td align="right">0.0000001</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.1307995</td>
+<td align="right">0.5138800</td>
+<td align="right">0.2545332</td>
+<td align="right">0.8009437</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.3855854</td>
+<td align="right">0.3180950</td>
+<td align="right">1.2121705</td>
+<td align="right">0.2355768</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.5212822</td>
+<td align="right">0.8819818</td>
+<td align="right">1.7248452</td>
+<td align="right">0.0955793</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">-1.3276433</td>
+<td align="right">0.8445746</td>
+<td align="right">-1.5719668</td>
+<td align="right">0.1271914</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">8.8312157</td>
+<td align="right">2.1766502</td>
+<td align="right">4.0572507</td>
+<td align="right">0.0003603</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">0.4649207</td>
+<td align="right">0.9043858</td>
+<td align="right">0.5140734</td>
+<td align="right">0.6112343</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Southern Asian countries, only one variable,
+“perception of corruption”, exhibited significant p-value (0.0003603)
+with extremely high coefficient (8.8312157) indicating that among all 6
+variables, “perception of corruption” had the largest impact on
+happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-sub-saharan-africa"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in
+Sub-Saharan Africa</h2>
+<pre class="r"><code>sub_africa = happiness_score|&gt;
+  filter(region == &quot;Sub-Saharan Africa&quot;)
+
+model8 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = sub_africa)
+
+model8|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="15%" />
+<col width="14%" />
+<col width="15%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.6862788</td>
+<td align="right">0.1737404</td>
+<td align="right">15.4614553</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.6020415</td>
+<td align="right">0.1539281</td>
+<td align="right">3.9111867</td>
+<td align="right">0.0001280</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.6583385</td>
+<td align="right">0.1332112</td>
+<td align="right">4.9420649</td>
+<td align="right">0.0000017</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">-0.0725829</td>
+<td align="right">0.2444136</td>
+<td align="right">-0.2969676</td>
+<td align="right">0.7668173</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">0.9605341</td>
+<td align="right">0.2729970</td>
+<td align="right">3.5184786</td>
+<td align="right">0.0005437</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">-0.6583010</td>
+<td align="right">0.4600525</td>
+<td align="right">-1.4309258</td>
+<td align="right">0.1541028</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">2.0618730</td>
+<td align="right">0.4998157</td>
+<td align="right">4.1252665</td>
+<td align="right">0.0000555</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Sub- Saharan African countries, variable
+“generosity” exhibited coefficient (2.0618730) with significant p-value
+(0.0000555) indicating that it had the most substantial impact on
+happiness score. Following this, variables “freedom to make life
+choice”, “social support” and “gdp per capita” also had essential impact
+on happiness score since they had relatively large coefficient and
+significant p-value(&lt;0.001). However, “health life expectancy” and
+“perception of corruption” did not appear to have significant p-value
+(&gt;0.05) indicating that they did not have significant impact on
+happiness score.</p>
+</div>
+<div
+id="multiple-linear-regression-for-happiness-score-prediction-in-western-europe"
+class="section level2">
+<h2>Multiple linear Regression for Happiness Score Prediction in Western
+Europe</h2>
+<pre class="r"><code>west_europe = happiness_score|&gt;
+  filter(region == &quot;Western Europe&quot;)
+
+model9 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = west_europe)
+
+model9|&gt;
+  broom::tidy()|&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="42%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.1188003</td>
+<td align="right">0.7020829</td>
+<td align="right">3.017878</td>
+<td align="right">0.0032440</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_capita</td>
+<td align="right">0.8563506</td>
+<td align="right">0.3675997</td>
+<td align="right">2.329574</td>
+<td align="right">0.0218810</td>
+</tr>
+<tr class="odd">
+<td align="left">social_support</td>
+<td align="right">0.7417660</td>
+<td align="right">0.1914877</td>
+<td align="right">3.873701</td>
+<td align="right">0.0001936</td>
+</tr>
+<tr class="even">
+<td align="left">health_life_expectancy</td>
+<td align="right">1.1950538</td>
+<td align="right">0.5049965</td>
+<td align="right">2.366459</td>
+<td align="right">0.0199258</td>
+</tr>
+<tr class="odd">
+<td align="left">freedom_to_make_life_choices</td>
+<td align="right">0.8686215</td>
+<td align="right">0.3881809</td>
+<td align="right">2.237672</td>
+<td align="right">0.0275070</td>
+</tr>
+<tr class="even">
+<td align="left">perception_of_corruption</td>
+<td align="right">2.7240472</td>
+<td align="right">0.3798791</td>
+<td align="right">7.170826</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">generosity</td>
+<td align="right">1.2352683</td>
+<td align="right">0.3167298</td>
+<td align="right">3.900070</td>
+<td align="right">0.0001763</td>
+</tr>
+</tbody>
+</table>
+<p>From 2015 to 2019, in Western European countries, all 6 variables had
+significant impact on happiness score since their p-value were all
+smaller than 0.05. Among these variables, “perception of corruption”
+exhibited the largest coefficient and the smallest p-valu indicating
+that it had the most significant impact on happiness score.</p>
+<p>According to the linear regression model performed separately
+according to their regions, factors that impacted the happiness score
+varied a lot. One extreme case took place in North American countries
+since none of the factors were playing significant roles in impacting
+their happiness score; another extreme case took place in western-
+European countries since all 6 variables had significant impact on the
+happiness score while “perception of corruption” was the main factors.
+The linear regression models also indicate that both Southern Asian
+countries and Southeastern Asian countries had only one factor,
+“perception of corruption” and “gdp per capita” respectively with
+extremely significant p-values. “freedom to make life choices” appeared
+to make the greatest impact on the happiness score in Central and
+Eastern European and Latin American and Caribbean countries
+countries.”perception of corruption” played a substantial role on
+impacting the happiness score in southern Asian countries and eastern
+Asian countries.</p>
+<p><a href="index.html">Back To Home</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

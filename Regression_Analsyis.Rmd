@@ -1,0 +1,272 @@
+---
+title: "Regression Analysis"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modelr)
+set.seed(1)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+# Part 1: Which factors impact the happiness score the most?
+
+
+## Multiple Linear Regression for Happiness Score Prediction
+
+```{r}
+happiness_score = read_csv("./Data/combined_happiness.csv")
+
+predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = happiness_score)
+
+predicted_model|>
+  broom::tidy()|>
+  knitr::kable()
+
+```
+
+The variable "freedom to make life choices" exhibits the largest coefficient (1.4812709) with a highly significant p-value(<0.0000001), indicating it exerts the most substantial effect on happiness scores. Following this, "GDP per capita", "Health life expectancy", and "Social support" are also significant contributors to happiness in order of their estimates. "Perception of corruption" and "Generosity" also significantly impact happiness but to a lesser extent, based on their estimates and p-values.
+
+# Part 2: Does the result change over time?
+
+## Multiple linear Regression for Happiness Score Prediction in 2015
+```{r}
+data_2015 = happiness_score|>
+  filter(year == 2015)
+
+model2015 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2015)
+
+model2015|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2015, the variable "social support" exhibited the largest coefficient (1.4088916) with the lowest p-value(<0.0000001) among all variables. This indicated that it performed the most substantial effect on happiness score in 2015. Following "social support", "freedom to make life choices", "health life expectancy" and "gdp per capita" also appeared to have relatively high estimates with significant p-values , indicating that there were sufficient evidences to show their essential effects on happiness score. However, "perception of corruption" and "generosity" appeared to have p-values larger than 0.05 indicating that they didn't have significant impact on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in 2016
+```{r}
+data_2016 = happiness_score|>
+  filter(year == 2016)
+
+model2016 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2016)
+
+model2016|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2016, the variable "freedom to make life choices" exhibited the largest coefficient (1.5139349) with a significant p-value(0.0001435), while the variable "health life expectancy" and "social support" exhibited the second and the third largest coefficient and more significant p-values(<0.0001) in comparison to variable "freedom to make life choices". This indicated that they all exhibited a very outstanding impact on happiness score in 2016. Following them, "perception of corruption" and "gdp per capita" also appeared to have relatively high estimates with p-values smaller than 0.05, indicating that there were sufficient evidences to show their effects on happiness score. However, variable "generosity" appeared to have p-values  0.6602362, which is larger than 0.05, indicating that it didn't  exhibit significant impact to 2016's happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in 2017
+```{r}
+data_2017 = happiness_score|>
+  filter(year == 2017)
+
+model2017 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2017)
+
+model2017|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2017, the variable "freedom to make life choices" and "health life expectancy" exhibited the largest 2 coefficient (1.4757152)  and (1.2888803) with significant p-values (0.0000298) and (0.0000965) respectively, while the variable "social support" exhibited the third largest coefficient and more significant p-values(<0.000001) in comparison to variable "freedom to make life choices" and "health life expectancy". This indicated that they all exhibited a very outstanding impacts on happiness score in 2017. Following them, "gdp per capita" also appeared to have relatively high estimates (0.7844334) with p-values (0.0001849), indicating that there were sufficient evidences to show a significant impact on happiness score. However, variable "perception of corruption" and "generosity" appeared to have p-values larger than 0.05, indicating that they didn't  exhibit significant impact to 2017's happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in 2018
+```{r}
+data_2018 = happiness_score|>
+  filter(year == 2018)
+
+model2018 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2018)
+
+model2018|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2018, the variable "freedom to make life choices" and "social support" exhibited the largest 2 coefficient (1.3984419)  and (1.1150219) with significant p-values (0.0000214) and (0.0000005) respectively, indicating that they play very substantial job on impacting happiness score. Following them, the variables "health life expectancy" and "gdp per capita" exhibited relatively large coefficients with significant p-values(<0.01), indicating that they also exhibited very outstanding impacts on happiness score in 2018. However, variable "perception of corruption" and "generosity" appeared to have p-values larger than 0.05, indicating that they didn't  exhibit significant impact to 2018's happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in 2019
+```{r}
+data_2019 = happiness_score|>
+  filter(year == 2019)
+
+model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2019)
+
+model2019|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2019, the variable "freedom to make life choices" and "social support" exhibited the largest 2 coefficient (1.4548324)  and (1.1241916) with significant p-values (0.0001587) and (0.0000048) respectively, indicating that they play very substantial job on impacting happiness score. Following them, the variables "health life expectancy" and "gdp per capita" exhibited relatively large coefficients with significant p-values(<0.01), indicating that they also exhibited very outstanding impacts on happiness score in 2019. However, variable "perception of corruption" and "generosity" appeared to have p-values larger than 0.05, indicating that they didn't  exhibit significant impact to 2019's happiness score.
+
+According to the linear regressions performed separately for each year from 2015 to 2019, the main factor that impacted the happiness score changed over time. In 2015, "social support" had the most substantial impact on the happiness score, and its impact kept being significant until 2019. In the following 4 years, "freedom to make life choices" appeared to make the greatest impact on the happiness score. "health life expectancy" also impacted significantly on the happiness score since it exhibited the second or the third largest coefficient in the linear regression model from 2016 to 2019.
+
+
+# Part 3: Does the result vary by region?
+
+## Multiple linear Regression for Happiness Score Prediction in Central and Eastern Europe
+```{r}
+central_east = happiness_score|>
+  filter(region == "Central and Eastern Europe")
+
+model1 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = central_east)
+
+model1|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Central and Eastern European countries, variables "freedom to make life choices" exhibited the largest coefficient(1.7050905) with significant p-value(0.0000021) indicating that it impacted substantially on happiness score. Meanwhile, variables "gdp per capita" and "social support" exhibited relatively high coefficients (1.0993611) and (0.5447398) respectively with significant p-value (<0.001) showing their essential impact on happiness score. Variables "health life expectancy", "perception of corruption" and "generosity" exhibited smaller and even negative coefficients; however, these variables did not exhibit significant p-values(>0.05) indicating that it was not significant enough to tell that they had impact on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Eastern Asia
+```{r}
+east_asia = happiness_score|>
+  filter(region == "Eastern Asia")
+
+model2 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_asia)
+
+model2|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Eastern Asian countries, variable "perception of corruption" exhibited extremely high coefficient (-6.1001405) with a significant p-value(0.0007172) indicating that "perception of corruption" had extremely substantial negative impact on happiness score. Variable "gdp per capita" exhibited the second highest coefficient (2.6321054) with a significant p-value (0.0000010) indicating that it had essential impact on happiness score. However, other variables exhibited p-values larger than 0.05 showing that it was not significant enough to tell that they had impacts on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Latin America and Caribbean
+```{r}
+latin_caribbean = happiness_score|>
+  filter(region == "Latin America and Caribbean")
+
+model3 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = latin_caribbean)
+
+model3|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Latin American and Caribbean countries, variable "freedom to make life choices" had the most significant impact on happiiness score since it exhibited the highest coefficient(2.4568168) with extremely significant p-value (<0.000001). Following this, variables "health life expectancy" and "gdp per capita" exhibited relatively high coefficients (1.7455082) and (1.4869935) respectively with significant p-values indicating their essential impact on happiness score. Variable "social support" exhibited a negative coefficient "-0.6315397" with a significant p-value (0.0066120) indicating that "social support" had negative impact on happiness score. However, variables "perception of corruption" and "generosity" appear to have p-values(>0.05) indicating that it was not significant enough to tell that they had impacts on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Middle East and Northern Africa
+```{r}
+east_africa = happiness_score|>
+  filter(region == "Middle East and Northern Africa")
+
+model4 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_africa)
+
+model4|>
+  broom::tidy()|>
+  knitr::kable()
+```
+From 2015 to 2019, in Middle Eastern and Northern African countries, variables "health life expectancy" exhibited the largest coefficient (2.0670148) with a significant p-value(0.0000229), while the variable "gdp per capita" exhibited the second largest coefficient and more significant p-values(<0.0001) in comparison to variable "health life expectancy". The variables "generosity","freedom to make life choices" and "social support" also exhibited relatively large coefficient with significant p-value. This indicated that they all exhibited a very outstanding impact on happiness score. However, variable "perception of corruption" appeared to have p-values 0.5785945, which is larger than 0.05, indicating that it didn't  exhibit significant impact to the happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in North America
+```{r}
+north_america = happiness_score|>
+  filter(region == "North America")
+
+model5 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = north_america)
+
+model5|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in North American countries, none of the 6 variables exhibited significant p-value since all their p-values were greater than 0.05 indicating that none of the variables exhibit significant impact to the happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Southeastern Asia
+```{r}
+southeastern_asia = happiness_score|>
+  filter(region == "Southeastern Asia")
+
+model6 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southeastern_asia)
+
+model6|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Southeastern Asian countries, only variable "gdp per capita" exhibited relatively high coefficient (1.6457687) with significant p-value (0.0000165) indicating that "gdp per capita" had substantial impact on happiness scrore. Despite "gdp per capita", none of other variables exhibited significant p-values indicating that we did not have sufficient evidence to show their impact on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Southern Asia
+```{r}
+southern_asia = happiness_score|>
+  filter(region == "Southern Asia")
+
+model7 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southern_asia)
+
+model7|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Southern Asian countries, only one variable, "perception of corruption", exhibited significant p-value (0.0003603) with extremely high coefficient (8.8312157) indicating that among all 6 variables, "perception of corruption" had the largest impact on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Sub-Saharan Africa
+```{r}
+sub_africa = happiness_score|>
+  filter(region == "Sub-Saharan Africa")
+
+model8 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = sub_africa)
+
+model8|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Sub- Saharan African countries, variable "generosity" exhibited coefficient (2.0618730) with significant p-value (0.0000555) indicating that it had the most substantial impact on happiness score. Following this, variables "freedom to make life choice", "social support" and "gdp per capita" also had essential impact on happiness score since they had relatively large coefficient and significant p-value(<0.001). However, "health life expectancy" and "perception of corruption" did not appear to have significant p-value (>0.05) indicating that they did not have significant impact on happiness score.
+
+## Multiple linear Regression for Happiness Score Prediction in Western Europe
+```{r}
+west_europe = happiness_score|>
+  filter(region == "Western Europe")
+
+model9 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = west_europe)
+
+model9|>
+  broom::tidy()|>
+  knitr::kable()
+```
+From 2015 to 2019, in Western European countries, all 6 variables had significant impact on happiness score since their p-value were all smaller than 0.05. Among these variables, "perception of corruption" exhibited the largest coefficient and the smallest p-valu indicating that it had the most significant impact on happiness score. 
+
+According to the linear regression model performed separately according to their regions, factors that impacted the happiness score varied a lot. One extreme case took place in North American countries since none of the factors were playing significant roles in impacting their happiness score; another extreme case took place in western- European countries since all 6 variables had significant impact on the happiness score while "perception of corruption" was the main factors. The linear regression models also indicate that both Southern Asian countries and Southeastern Asian countries had only one factor, "perception of corruption" and "gdp per capita" respectively with extremely significant p-values. "freedom to make life choices" appeared to make the greatest impact on the happiness score in Central and Eastern European and Latin American and Caribbean countries countries."perception of corruption" played a substantial role on impacting the happiness score in southern Asian countries and eastern Asian countries.
+
+
+
+[Back To Home](index.html)
+
