@@ -7,10 +7,10 @@ navbar:
       href: About.html
     - text: "Data"
       href: Data.html
-    - text: "Regression Analysis"
-      href: Regression_Analsyis.html
     - text: "EDA"
       href: EDA.html
+    - text: "Regression Analysis"
+      href: Regression_Analysis.html
     - text: "Final Report"
       href: Final-Report.html
     - text: "Shiny APP"
