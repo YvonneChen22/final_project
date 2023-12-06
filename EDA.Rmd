@@ -235,7 +235,7 @@ hap_df |>
     title = "World Trends of Happiness Indicators from 2015 to 2019",
     xaxis = list( title = "Year"),
     yaxis = list(title = "Average Score"),
-    autosize = F, width = 1000, height = 500
+    autosize = F, width = 820, height = 500
   )
 ```
 
@@ -275,7 +275,7 @@ regional_hap_df |>
       title = paste("Regional Trend for GDP Per Captia from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
@@ -312,7 +312,7 @@ regional_hap_df |>
       title = paste("Regional Trend for Social Support from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
@@ -349,7 +349,7 @@ regional_hap_df |>
       title = paste("Regional Trend for Life Expectancy from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
@@ -386,7 +386,7 @@ regional_hap_df |>
       title = paste("Regional Trend for Freedom to Make Life Choices from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
@@ -424,7 +424,7 @@ regional_hap_df |>
       title = paste("Regional Trend for Perception of Corruption from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
@@ -461,7 +461,7 @@ regional_hap_df |>
       title = paste("Regional Trend for Generosity from 2015 to 2019"),
       xaxis = list(title = "Year"),
       yaxis = list(title = "Average Score"),
-      autosize = F, width = 1000, height = 500
+      autosize = F, width = 820, height = 500
     )
 ```
 
