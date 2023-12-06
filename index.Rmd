@@ -9,6 +9,7 @@ output:
 
 <img src="images/happiness_score.jpg" style="width:75%">
 
+
 # Motivation
 
 Happiness is a critical measure of social progress. Understanding what drives happiness can help in formulating policies that improve the quality of life for citizens.By studying the factors that affect happiness, we can contribute to a multidisciplinary understanding of well-being, which in turn can inform a variety of practical applications aimed at improving people’s lives at both the individual and collective levels.
