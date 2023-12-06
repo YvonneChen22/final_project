@@ -58,6 +58,9 @@ hap_df |>
   )
 ```
 
+From 2015 to 2019, Qatar has the highest GDP Per Capita and Somalia and Central Africa has the lowest.  Qatar, Luxembourger, UAE, Singapore, Kuwait are the top 5 countries with the highest GDP Per Capita. Somalia, Central Africa Republic, Burundi, Democratic Republic of the Congo, Liberia are the bottom 5 countries with the lowest GDP Per Capita.
+
+
 ### Social Support
 ```{r}
 hap_df |>
@@ -76,7 +79,10 @@ hap_df |>
   )
 ```
 
-### life Expectancy
+From 2015 to 2019, Iceland has the highest social support score. Benin and Syria has the lowest.  Iceland, Ireland, Denmark, New Zealand and Finland are the top 5 countries with the highest social support score. Benin, Syria, Togo, Burundi, Malawi are the bottom 5 countries with the lowest social support scores.
+
+
+### Life Expectancy
 ```{r}
 hap_df |>
   mutate(country = fct_reorder(country, health_life_expectancy))|>
@@ -93,6 +99,10 @@ hap_df |>
     autosize = F, width = 1000, height = 500
   )
 ```
+
+From 2015 to 2019, Singapore and Hong Kong, China has the highest life expectancy score. Singapore, Hong Kong, China, Japan,  Spain and South Korea are the top 5 countries with the highest score. Sierra Leone, Swaziland, Central Africa Republic, Chad and Nigeria are the bottom 5 countries with the lowest life expectancy scores.
+
+
 
 ### Freedom to make Choice 
 ```{r}
@@ -113,6 +123,9 @@ hap_df |>
   )
 ```
 
+From 2015 to 2019, Norway and Uzbekistan has the highest freedom score. Norway, Uzbekistan, Iceland, Finland, Switzerland are the top 5 countries with the highest score. Angola, Sudan, Haiti, Burundi, and Greece are the bottom 5 countries with the lowest freedom scores.
+
+
 ### Perception of Corruption
 ```{r}
 hap_df |>
@@ -131,6 +144,9 @@ hap_df |>
   )
 ```
 
+From 2015 to 2019, Rwanda and Singapore has the lowest perception of corruption. Singapore, Rwanda, Qatar, Finland and Denmark are the top 5 countries with the lowest perception of corruption. Bosnia, Romania, Bulgaria, Moldova and Lithuania are the bottom 5 countries with the highest perception of corruption.
+
+
 ### Generosity
 ```{r}
 hap_df |>
@@ -148,6 +164,9 @@ hap_df |>
     autosize = F, width = 1000, height = 500
   )
 ```
+
+From 2015 to 2019, Myanmar has the highest generosity score. Myanmar, Thailand, Malta, Indonesia, and UK are the top 5 countries with the highest score. Lithuania, Morocco, Gabon,  Azerbaijan, and China are the bottom 5 countries with the lowest generosity scores.
+
 
 ### Iteration
 ```{r, warning=FALSE}
@@ -189,6 +208,7 @@ for (plot in plots) {
 }
 ```
 
+
 ## World Trends of the Six Happiness Indicators from 2015 to 2019
 ```{r}
 hap_df |>
@@ -217,6 +237,9 @@ hap_df |>
     autosize = F, width = 1000, height = 500
   )
 ```
+
+The GDP per Capita increases from 2015 to 2017, then decreased from 2017 to 2018. There’s a slight increase from 2018 to 2019 but the world has the highest GDP per Capita in 2017. The social support decreased from 2015 to 201 with a significant increase from 2016 top 2017, then it stayed relatively stable. The healthy life expectancy score decreased from 2016 to 2017 then increased from 2017 to 2019. The freedom of choices decrease from 2015 to 2016, increased from 2016 to 2018 and decreased again in 2019. The proception of corruption stayed relatively stable but the world generally is seeing increasing corruptions. The generosity decrease from 2017 to 2018 which in align with the trend of GDP per Capita, suggesting possible association between people’s income and their generosity around the world. However, it’s worth noting that the countries with highest income are not the countries with top generosity scores. 
+Overall, social support and healthy life expectancy improved from 2015 to 2019. 
 
 
 ## Which region has the highest and lowest score for the six factors
@@ -255,6 +278,8 @@ regional_hap_df |>
     )
 ```
 
+From 2015 to 2019, North America has the highest GDP and Sub-Saharan Arica has the lowest. The trend between 10 regions is relatively similar, with peak at 2017 and decreased from 2017 to 2018. 
+
 ### Social Support
 ```{r}
 hap_df |>
@@ -289,6 +314,8 @@ regional_hap_df |>
       autosize = F, width = 1000, height = 500
     )
 ```
+
+From 2015 to 2019, Australia and New Zealand has the highest social support score and Southern Asia has the lowest.  The trend between 10 regions is relatively similar, with a decreased from 2015 to 2016, then an increase trend afterwards. 
 
 ### Life Expectancy
 ```{r}
@@ -325,6 +352,7 @@ regional_hap_df |>
     )
 ```
 
+From 2015 to 2019, Eastern Asia has the highest healthy life expectancy and S Sub-Saharan Arica has the lowest. The trend between 10 regions is relatively similar, with a increasing trend from 2015 to 2019.
 
 ### Freedom to Make Choice
 ```{r}
@@ -361,6 +389,9 @@ regional_hap_df |>
     )
 ```
 
+From 2015 to 2019, Australia and New Zealand has the highest freedom score and Middle East and Northern Africa has the lowest. The trend between 10 regions is relatively similar. 
+
+
 ### Perception of Corruption
 ```{r}
 hap_df |>
@@ -396,6 +427,8 @@ regional_hap_df |>
     )
 ```
 
+From 2015 to 2019, Australia and New Zealand has the lowest proception of corruption  Central and eastern Europe has the lowest. There are relatively larger variation in trend between the 10 regions compare to other factors, but all regions has increasing perception of correction. 
+
 ### Generosity
 ```{r}
 hap_df |>
@@ -430,6 +463,13 @@ regional_hap_df |>
       autosize = F, width = 1000, height = 500
     )
 ```
+
+From 2015 to 2019, Australia and New Zealand has the highest generosity proception of corruption  Central and eastern Europe has the lowest. The trend between 10 regions is relatively similar. 
+
+We noticed that at regional level, Australia and New Zealand ranked first in 4 four out of 6 factors and North American ranked first in 1 out of the other 2. It is worth mentioning that North American revision only has two countries, USA and Canada.  Australia and New Zealand also only has two countries, Australia, and New Zealand. They may have high average scores and less variable with in the region than the other 8 regions. The other regions might have countries with very high score and very low score which impacted the averages core. This will require further analysis. 
+
+Also there are not much discrepancy found in trend between the 10 regions and the regional trends align with the world trends as well. 
+
 
 ## World Map
 ```{r include=FALSE}
@@ -525,6 +565,7 @@ gdp <- worldjoin %>%
 
 gdp
 ```
+
 
 
 # Explore Happiness Score
