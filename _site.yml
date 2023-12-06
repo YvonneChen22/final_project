@@ -8,7 +8,7 @@ navbar:
     - text: "Data"
       href: Data.html
     - text: "Regression Analysis"
-      href: Regression_Analysis.html
+      href: Regression_Analsyis.html
     - text: "EDA"
       href: EDA.html
     - text: "Final Report"
