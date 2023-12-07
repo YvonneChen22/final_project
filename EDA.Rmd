@@ -13,7 +13,7 @@ library(plotly)
 library(purrr)
 ```
 
-```{r, include = FALSE}
+```{r warning=FALSE}
 hap_df = read_csv("./data/combined_happiness.csv")|>
   mutate(
     year = as.factor(year)
@@ -42,7 +42,7 @@ regional_hap_df = hap_df|>
 
 ## Which country has the highest and lowest score for the six factors
 ### GDP Per Captia
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(country = fct_reorder(country, gdp_per_capita))|>
   plot_ly (
@@ -63,7 +63,7 @@ From 2015 to 2019, Qatar has the highest GDP Per Capita and Somalia and Central 
 
 
 ### Social Support
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(country = fct_reorder(country, social_support))|>
   plot_ly (
@@ -84,7 +84,7 @@ From 2015 to 2019, Iceland has the highest social support score. Benin and Syria
 
 
 ### Life Expectancy
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(country = fct_reorder(country, health_life_expectancy))|>
   plot_ly (
@@ -106,7 +106,7 @@ From 2015 to 2019, Singapore and Hong Kong, China has the highest life expectanc
 
 
 ### Freedom to make Choice 
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(
     country = fct_reorder(country, freedom_to_make_life_choices))|>
@@ -128,7 +128,7 @@ From 2015 to 2019, Norway and Uzbekistan has the highest freedom score. Norway, 
 
 
 ### Perception of Corruption
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(country = fct_reorder(country, perception_of_corruption))|>
   plot_ly (
@@ -149,7 +149,7 @@ From 2015 to 2019, Rwanda and Singapore has the lowest perception of corruption.
 
 
 ### Generosity
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(country = fct_reorder(country, generosity))|>
   plot_ly (
@@ -170,7 +170,7 @@ From 2015 to 2019, Myanmar has the highest generosity score. Myanmar, Thailand, 
 
 
 ### Iteration
-```{r, warning=FALSE}
+```{r warning=FALSE}
 factor_country_level <- function(data, variable, title) {
   p = data %>%
     mutate(country = fct_reorder(country, .data[[variable]])) %>%
@@ -211,7 +211,7 @@ for (plot in plots) {
 
 
 ## World Trends of the Six Happiness Indicators from 2015 to 2019
-```{r}
+```{r warning=FALSE}
 hap_df |>
   group_by(year) |>
   summarise(
@@ -245,7 +245,7 @@ Overall, social support and healthy life expectancy improved from 2015 to 2019.
 
 ## Which region has the highest and lowest score for the six factors
 ### GDP Per Capita
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, gdp_per_capita))|>
   group_by(region, year)|>
@@ -264,7 +264,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "gdp_per_capita")|>
   plot_ly(
@@ -282,7 +282,7 @@ regional_hap_df |>
 From 2015 to 2019, North America has the highest GDP and Sub-Saharan Arica has the lowest. The trend between 10 regions is relatively similar, with peak at 2017 and decreased from 2017 to 2018. 
 
 ### Social Support
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, social_support))|>
   group_by(region, year)|>
@@ -301,7 +301,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "social_support")|>
   plot_ly(
@@ -319,7 +319,7 @@ regional_hap_df |>
 From 2015 to 2019, Australia and New Zealand has the highest social support score and Southern Asia has the lowest.  The trend between 10 regions is relatively similar, with a decreased from 2015 to 2016, then an increase trend afterwards. 
 
 ### Life Expectancy
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, health_life_expectancy))|>
   group_by(region, year)|>
@@ -338,7 +338,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "healthy_life_expectancy")|>
   plot_ly(
@@ -356,7 +356,7 @@ regional_hap_df |>
 From 2015 to 2019, Eastern Asia has the highest healthy life expectancy and S Sub-Saharan Arica has the lowest. The trend between 10 regions is relatively similar, with a increasing trend from 2015 to 2019.
 
 ### Freedom to Make Choice
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, freedom_to_make_life_choices))|>
   group_by(region, year)|>
@@ -375,7 +375,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "freedom_to_make_life_choices")|>
   plot_ly(
@@ -394,7 +394,7 @@ From 2015 to 2019, Australia and New Zealand has the highest freedom score and M
 
 
 ### Perception of Corruption
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, perception_of_corruption))|>
   group_by(region, year)|>
@@ -413,7 +413,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "perception_of_corruption")|>
   plot_ly(
@@ -431,7 +431,7 @@ regional_hap_df |>
 From 2015 to 2019, Australia and New Zealand has the lowest proception of corruption  Central and eastern Europe has the lowest. There are relatively larger variation in trend between the 10 regions compare to other factors, but all regions has increasing perception of correction. 
 
 ### Generosity
-```{r}
+```{r warning=FALSE}
 hap_df |>
   mutate(region = fct_reorder(region, generosity))|>
   group_by(region, year)|>
@@ -450,7 +450,7 @@ hap_df |>
 ```
 
 **Regional Trend**
-```{r}
+```{r warning=FALSE}
 regional_hap_df |>
   filter(factor == "generosity")|>
   plot_ly(
@@ -585,7 +585,7 @@ In order to explore the distribution of happiness score all over the world, we d
 ### 2015
 #### Bar Chat
 
-```{r}
+```{r warning=FALSE}
 combined_happiness|>
   filter(year == "2015")|>
   mutate(country = fct_reorder(country, score))|>
@@ -627,7 +627,7 @@ In general, countries in Europe, Australia, North and South America have higher 
 
 ### 2016
 #### Bar Chart
-```{r}
+```{r warning=FALSE}
 combined_happiness|>
   filter(year == "2016")|>
   mutate(country = fct_reorder(country, score))|>
@@ -668,7 +668,7 @@ In general, countries in Europe, Australia, North and South America have higher 
 
 ### 2017
 #### Bar Chart
-```{r}
+```{r warning=FALSE}
 combined_happiness|>
   filter(year == "2017")|>
   mutate(country = fct_reorder(country, score))|>
@@ -709,7 +709,7 @@ In general, countries in Europe, Australia, North and South America have higher 
 
 ### 2018
 #### Bar Chart
-```{r}
+```{r warning=FALSE}
 combined_happiness|>
   filter(year == "2018")|>
   mutate(country = fct_reorder(country, score))|>
@@ -750,7 +750,7 @@ In general, countries in Europe, Australia, North and South America have higher 
 
 ### 2019
 #### Bar Chart
-```{r}
+```{r warning=FALSE}
 combined_happiness|>
   filter(year == "2019")|>
   mutate(country = fct_reorder(country, score))|>
