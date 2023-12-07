@@ -12,7 +12,7 @@ happiness_score = read_csv("./Data/combined_happiness.csv")
 ```
 
     ## Rows: 782 Columns: 11
-    ## ── Column specification ─────────────────
+    ## ── Column specification ──────────────────────
     ## Delimiter: ","
     ## chr (2): country, region
     ## dbl (9): year, rank, score, gdp_per_capita, social_support, health_life_expe...
