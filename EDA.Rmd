@@ -584,18 +584,27 @@ In order to explore the distribution of happiness score all over the world, we d
 
 ### 2015
 #### Bar Chat
+
 ```{r}
-combined_happiness |>
-  filter(year == "2015") |>
-  arrange(desc(score)) |>
-  ggplot(aes(x = reorder(country, -score), y = score, fill = region)) +
-  geom_bar(stat = "identity") +
-  labs(title = "2015 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+combined_happiness|>
+  filter(year == "2015")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2015 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
 ```
 
-In year 2015, Switzerland has the highest happiness score while Togo has the lowest happiness score among 158 countries.
+
+In year 2015, Switzerland has the highest happiness score (7.587) while Togo has the lowest happiness score (2.839) among 158 countries.
 
 #### World Map
 ```{r}
@@ -619,17 +628,24 @@ In general, countries in Europe, Australia, North and South America have higher 
 ### 2016
 #### Bar Chart
 ```{r}
-combined_happiness |>
-  filter(year == "2016") |>
-  arrange(desc(score)) |>
-  ggplot(aes(x = reorder(country, -score), y = score, fill = region)) +
-  geom_bar(stat = "identity") +
-  labs(title = "2016 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+combined_happiness|>
+  filter(year == "2016")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2016 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
 ```
 
-In year 2016, Denmark has the highest happiness score while Burundi has the lowest happiness score among 157 countries.
+In year 2016, Denmark has the highest happiness score (7.526) while Burundi has the lowest happiness score (2.905) among 157 countries.
 
 #### World Map
 ```{r}
@@ -653,17 +669,24 @@ In general, countries in Europe, Australia, North and South America have higher 
 ### 2017
 #### Bar Chart
 ```{r}
-combined_happiness |>
-  filter(year == "2017") |>
-  arrange(desc(score)) |>
-  ggplot(aes(x = reorder(country, -score), y = score, fill = region)) +
-  geom_bar(stat = "identity") +
-  labs(title = "2017 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+combined_happiness|>
+  filter(year == "2017")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2017 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
 ```
 
-In year 2017, Norway has the highest happiness score while Central African Republic has the lowest happiness score among 155 countries.
+In year 2017, Norway has the highest happiness score (7.537) while Central African Republic has the lowest happiness score (2.693) among 155 countries.
 
 #### World Map
 ```{r}
@@ -687,17 +710,24 @@ In general, countries in Europe, Australia, North and South America have higher 
 ### 2018
 #### Bar Chart
 ```{r}
-combined_happiness |>
-  filter(year == "2018") |>
-  arrange(desc(score)) |>
-  ggplot(aes(x = reorder(country, -score), y = score, fill = region)) +
-  geom_bar(stat = "identity") +
-  labs(title = "2018 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+combined_happiness|>
+  filter(year == "2018")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2018 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
 ```
 
-In year 2018, Finland has the highest happiness score while Burundi has the lowest happiness score among 156 countries.
+In year 2018, Finland has the highest happiness score (7.632) while Burundi has the lowest happiness score (2.905) among 156 countries.
 
 #### World Map
 ```{r}
@@ -721,17 +751,24 @@ In general, countries in Europe, Australia, North and South America have higher 
 ### 2019
 #### Bar Chart
 ```{r}
-combined_happiness |>
-  filter(year == "2019") |>
-  arrange(desc(score)) |>
-  ggplot(aes(x = reorder(country, -score), y = score, fill = region)) +
-  geom_bar(stat = "identity") +
-  labs(title = "2019 World Happiness Score Rank", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+combined_happiness|>
+  filter(year == "2019")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2019 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
 ```
 
-In year 2019, Finland has the highest happiness score while South Sudan has the lowest happiness score among 156 countries.
+In year 2019, Finland has the highest happiness score (7.769) while South Sudan has the lowest happiness score (2.853) among 156 countries.
 
 #### World Map
 ```{r}
@@ -776,8 +813,8 @@ hp_avg|>
   ggplot(aes(x = reorder(country, -score_avg), y = score_avg, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "Average World Happiness Score Rank 2015-2019", x = "Countries", y = "Happiness Score") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
-  theme(legend.position = "bottom")
+  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust=1, size = 4)) +
+  theme(legend.position = "right")
 ```
 
 We only keep countries that are in the top rank for all five years. Among those 144 countries, Danmark has the highest average happiness score while Burundi has the lowest average happiness score in 5 years.

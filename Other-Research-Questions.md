@@ -70,12 +70,14 @@ worldjoin <- inner_join(world_data, combined_happiness, by = "country")
 
     ## Warning in inner_join(world_data, combined_happiness, by = "country"): Detected an unexpected many-to-many
     ## relationship between `x` and `y`.
-    ## ℹ Row 11 of `x` matches multiple rows in `y`.
-    ## ℹ Row 153 of `y` matches multiple rows in
-    ##   `x`.
-    ## ℹ If a many-to-many relationship is expected,
-    ##   set `relationship = "many-to-many"` to
-    ##   silence this warning.
+    ## ℹ Row 11 of `x` matches multiple rows in
+    ##   `y`.
+    ## ℹ Row 153 of `y` matches multiple rows
+    ##   in `x`.
+    ## ℹ If a many-to-many relationship is
+    ##   expected, set `relationship =
+    ##   "many-to-many"` to silence this
+    ##   warning.
 
 ``` r
 ## compile all map theme configurations
@@ -361,12 +363,14 @@ wold_avg <- inner_join(world_data, hp_avg, by = "country")
 
     ## Warning in inner_join(world_data, hp_avg, by = "country"): Detected an unexpected many-to-many
     ## relationship between `x` and `y`.
-    ## ℹ Row 11 of `x` matches multiple rows in `y`.
-    ## ℹ Row 701 of `y` matches multiple rows in
-    ##   `x`.
-    ## ℹ If a many-to-many relationship is expected,
-    ##   set `relationship = "many-to-many"` to
-    ##   silence this warning.
+    ## ℹ Row 11 of `x` matches multiple rows in
+    ##   `y`.
+    ## ℹ Row 701 of `y` matches multiple rows
+    ##   in `x`.
+    ## ℹ If a many-to-many relationship is
+    ##   expected, set `relationship =
+    ##   "many-to-many"` to silence this
+    ##   warning.
 
 ``` r
 hp_avg_plot <- wold_avg |>
@@ -556,9 +560,9 @@ combined_happiness |>
   labs(title = "World Happiness Score Trend in 10 Regions", x = "year", y = "Happiness Score")
 ```
 
-    ## `summarise()` has grouped output by 'year'.
-    ## You can override using the `.groups`
-    ## argument.
+    ## `summarise()` has grouped output by
+    ## 'year'. You can override using the
+    ## `.groups` argument.
 
 ![](Other-Research-Questions_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
