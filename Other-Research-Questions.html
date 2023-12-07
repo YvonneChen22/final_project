@@ -337,14 +337,12 @@ world_data[&quot;ISO3&quot;] &lt;- iso_codes$ISO3[match(world_data$region, iso_c
   select(-region)
 
 worldjoin &lt;- inner_join(world_data, combined_happiness, by = &quot;country&quot;)</code></pre>
-<pre><code>## Warning in inner_join(world_data, combined_happiness, by = &quot;country&quot;): Detected an unexpected many-to-many
-## relationship between `x` and `y`.
+<pre><code>## Warning in inner_join(world_data, combined_happiness, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x` and
+## `y`.
 ## ℹ Row 11 of `x` matches multiple rows in `y`.
-## ℹ Row 153 of `y` matches multiple rows in
-##   `x`.
-## ℹ If a many-to-many relationship is expected,
-##   set `relationship = &quot;many-to-many&quot;` to
-##   silence this warning.</code></pre>
+## ℹ Row 153 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship =
+##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
 <pre class="r"><code>## compile all map theme configurations
 cleanup &lt;- theme(
   axis.text = element_blank(),
@@ -594,14 +592,12 @@ years.</p>
 <div id="wordmap-5" class="section level3">
 <h3>wordmap</h3>
 <pre class="r"><code>wold_avg &lt;- inner_join(world_data, hp_avg, by = &quot;country&quot;)</code></pre>
-<pre><code>## Warning in inner_join(world_data, hp_avg, by = &quot;country&quot;): Detected an unexpected many-to-many
-## relationship between `x` and `y`.
+<pre><code>## Warning in inner_join(world_data, hp_avg, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x` and
+## `y`.
 ## ℹ Row 11 of `x` matches multiple rows in `y`.
-## ℹ Row 701 of `y` matches multiple rows in
-##   `x`.
-## ℹ If a many-to-many relationship is expected,
-##   set `relationship = &quot;many-to-many&quot;` to
-##   silence this warning.</code></pre>
+## ℹ Row 701 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship =
+##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
 <pre class="r"><code>hp_avg_plot &lt;- wold_avg |&gt;
   ggplot(mapping = aes(
     x=long,
@@ -779,9 +775,8 @@ regions from 2015 – 2019?</h1>
   geom_point() + 
   geom_line() +
   labs(title = &quot;World Happiness Score Trend in 10 Regions&quot;, x = &quot;year&quot;, y = &quot;Happiness Score&quot;)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;year&#39;.
-## You can override using the `.groups`
-## argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override
+## using the `.groups` argument.</code></pre>
 <p><img
 src="Other-Research-Questions_files/figure-gfm/unnamed-chunk-26-1.png" /><!-- --></p>
 <p>According to the scatter plot, from 2015 to 2019, Australia and New

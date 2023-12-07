@@ -854,7 +854,7 @@ combined_happiness |>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "2015 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
@@ -872,7 +872,7 @@ combined_happiness |>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "2016 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
@@ -891,7 +891,7 @@ combined_happiness |>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "2017 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
@@ -911,7 +911,7 @@ combined_happiness |>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "2018 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
@@ -930,7 +930,7 @@ combined_happiness |>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "2019 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
@@ -947,7 +947,7 @@ hp_avg|>
   ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
   geom_bar(stat = "identity") +
   labs(title = "Average World Happiness Score Rank 2015-2019", x = "Countries", y = "Happiness Score") +
-  scale_x_discrete(labels = label_wrap_gen(width = 12)) +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
   theme(legend.position = "none")
 ```
 
