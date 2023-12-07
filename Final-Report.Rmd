@@ -1,0 +1,1325 @@
+---
+title: "Final Report"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+---
+
+# Introduction
+
+## Motivation
+Every fairy tale concludes with the prince and princess living happily ever after. These are our most innocent and sincere wishes. However, as modern individuals lament the mounting pressures of work and life, alongside the escalating issues of depression and other mental health disorders, our happiness seems elusive. Happiness has become a crucial measurement of our well-being as well as a nation’s success. It's a fundamental human right, just like health. Every person has the right to happiness; it is affecting us both mental and physical health.  It has also become an integral indicator for national policy and operational objective for governments.
+
+But how do we quantify happiness? What are the sources of our happiness? Are we truly happy or unhappy? Is the world happy? How can we enhance our level of happiness? These are the questions we seek to answer through this project. Understanding what drives happiness can help in formulating policies that improve the quality of life for citizens. By studying the factors that affect happiness, we can contribute to a multidisciplinary understanding of well-being, which in turn can inform a variety of practical applications aimed at improving people’s lives at both the individual and collective levels.
+
+## Mission Statement
+Our mission is to conduct a comprehensive analysis of the factors influencing global happiness scores across the years 2015 to 2019. Through in-depth exploration and examination of Economic production (gdp per capita), social support, life expectancy, freedom, absence of corruption, and generosity, we aim to identify and understand the key determinants that contribute to varying happiness levels among nations during this period. By regression analysis, our goal is to unravel the relationships between happiness score and six factors. Other research questions help us know more about the distribution happiness score, and six factors, respectively. Ultimately, our research seeks to provide insights that can illuminate policy decisions and societal interventions, health system development fostering a deeper understanding of what drives happiness worldwide and how it evolves over time.
+
+## Related Work
+The origin of our inspiration is from an article published on the website ‘Sciencenordic’ – ‘How happiness is challenging GDP as the measure of a country's health’. In this article, the argument suggests that the traditional reliance on GDP as the primary measure of a country's health is insufficient, and we should consider a broader set of indicators that encompass measurement of happiness and well-being. The information highlights a strong correlation between inequality and unhappiness, suggesting that countries with high levels of equality, such as the Nordic countries, tend to perform significant in happiness rankings. This challenges the notion that GDP alone is a conclusive measure of well-being, as it does not account for the distribution of resources and the level of equality within a society. The reflection of  this trend towards recognizing the limitations of purely economic metrics and a broader understanding of what contributes to a fulfilling and happy life inspired us to think deeply.
+
+# Data Sources & Cleaning
+
+## Data Acquisition
+We sourced our data from The World Happiness Report, first published in 2012. This report gathers surveys from a nationally-representative sample of individuals, inquiring about their life satisfaction and their views on six factors: income, health, having reliable support, freedom to make life decisions, generosity, and the absence of government corruption. It then ranked around 155-158 countries base on the happiness score collected each year. We chose to utilize The World Happiness Reports published between 2015 and 2019, the pre-COVID period. The data can be accessed [here](https://www.kaggle.com/datasets/unsdsn/world-happiness). Each year's report is available as a separate CSV file, resulting in a total of five datasets. Each dataset comprises various variables, necessitating data cleaning and merging for analysis.
+
+## Data merging and cleaning
+We imported five dataset into RStudio. In order to merge them, we need to make sure all datasets have the same variables. We first updated all variable to `snake cases`, removed the unwanted variables and added a `year` variable representing the year for each dataset. Because only `2015` and `2016` data recorded `region` for each `country,` we extracted the `country` and `region` variables into separate data frame and `left_join` it into `2017`, `2018` and `2019` by `country `. We then stack all five dataset into our final dataset using `bind_row`. We then check if there’s any missing or miscoded values. Because there are new counties entering into the survey and ranking in `2017`, `2018` and `2019`, with no region recorded, and the dataset records same country differently in each year. We manually updated the value using `mutate()`. The code is read as following:
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+```{r message=FALSE, warning=FALSE}
+data2015_df = read_csv("./data/2015.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2015)|>
+  select(- standard_error, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+data2016_df = read_csv("./data/2016.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2016)|>
+  select(- lower_confidence_interval, - upper_confidence_interval, -dystopia_residual)|>
+  select(year, country, region, rank, score, everything() )
+
+region_df = data2015_df|>
+  select(country, region)
+
+data2017_df = read_csv("./data/2017.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2017)|>
+  select(- whisker_high, - whisker_low, -dystopia_residual)|>
+  select(-generosity, everything(), generosity)
+
+data2017_df = left_join(data2017_df, region_df)|>
+  select(year, country, region, everything())
+
+data2018_df = read_csv("./data/2018.csv")|>
+  janitor::clean_names()|>
+  mutate(
+    year=2018)|>
+  select(-generosity, everything(), generosity)
+
+data2018_df = left_join(data2018_df, region_df)|>
+  select(year, country, region, everything())|>
+  mutate(
+    perception_of_corruption = as.numeric(perception_of_corruption)
+  )
+
+data2019_df = read_csv("./data/2019.csv")|>
+  janitor::clean_names()|>
+  mutate(year=2019)|>
+  select(-generosity, everything(), generosity)
+
+data2019_df = left_join(data2019_df, region_df)|>
+  select(year, country, region, everything())
+
+hap_df = bind_rows(data2015_df, data2016_df, data2017_df, data2018_df, data2019_df)|>
+  mutate(
+    region = if_else(country == "Taiwan Province of China", "Eastern Asia", region),
+     region = if_else(country == "Hong Kong S.A.R., China", "Eastern Asia", region),
+    region = if_else(country == "Belize", "Latin America and Caribbean", region),
+    region = if_else(country == "Somalia", "Sub-Saharan Africa", region),
+    region = if_else(country == "Namibia", "Sub-Saharan Africa", region),
+    region = if_else(country == "South Sudan", "Sub-Saharan Africa", region),
+    region = if_else(country == "Trinidad & Tobago", "Latin America and Caribbean", region),
+    region = if_else(country == "Northern Cyprus", "Western Europe", region),
+    region = if_else(country == "North Macedonia", "Central and Eastern Europe", region),
+    region = if_else(country == "Gambia", "Sub-Saharan Africa", region),
+    country = if_else(country == "Hong Kong S.A.R., China", "Hong Kong", country),
+    country = if_else(country == "Northern Cyprus", "North Cyprus", country),
+    country = if_else(country == "Somaliland region", "Somalia", country),
+    country = if_else(country == "Taiwan Province of China", "Taiwan", country),
+    country = if_else(country == "Trinidad & Tobago", "Trinidad and Tobago", country)
+    )
+
+write_csv(hap_df, "./data/combined_happiness.csv")
+```
+
+## Final Dataset Description
+The final dataset has `r nrow(hap_df)` observations. There are `r ncol(hap_df)` variables:
+
+`year`: The year of the surveys.
+`country`: Name of the countries.
+`region`: region of the countries. There are `r unique(hap_df$region) |> length()` regions in the Dataset.
+`rank`: Rank of the countries base on happiness score.
+`score`: Happiness Score of the countries, with 10 representing the best possible life and 0 being the lowest.
+`gdp_per_capita`: Measurement on  income and GDP per Capital, value ranges from 0 – 2.10.
+`social support`: Measurement on having someone to count on in times of trouble, value ranges from 0 to 1.65.
+`health_life_expectancy`: Measurement on healthy life expectancy, which also reflects mental and physical health, value ranges from 0 to 1.15.
+`freedom_to_make_choices`: Measurement on freedom to choose what you do with your life, which also reflects human rights. Human rights include the right to life and liberty, freedom from slavery and torture, freedom of opinion and expression, the right to work and education, and many more. Everyone is entitled to these rights without discrimination. Value ranges from 0 – 0.75.
+`perception_of_corruption`: Measurement on if people think there’s corruption widespread throughout the government and within businesses, and if people trust their governments and have trust in the benevolence of others. Values ranges from 0 – 0.6. Please note that higher scores representing lower perception of corruption and higher trust of the government.
+`generosity`: Measurement on if people donated money to the charity, which is a sense of positive community engagement. Value ranges from 0-0.85. 
+`year`, `country` and `region` is factor and categorical variables. All the other variables are numeric and continuous variables.
+
+Later in the data analysis, we also added the ISO3 code (`ISO3`) to the dataset for the purpose of outputting geographic plot.
+
+# Exploratory Analysis
+
+We first performed exploratory data analysis to explore and visualize the current distribution of happiness and each of the six factors that thought to impact happiness around the world at country and region level. We are interested in finding which part of the world has the highest versus lowest happiness score as well as which part of the world has the highest versus lowers score of income, social support,health, freedom, perception of government corruption and generosity. In order to best depict the true nature of our data, we used a combination bar plots, heatmap, and scatter plot, and create a interactive [shiny app]("https://tianyiw44.shinyapps.io/p8105_final_shiny/") on the six happiness factor. 
+
+*For the happiness score*, we found that the geographic distribution of World Happiness Score is stable from 2015 to 2019. European Countries such as Finland, Switzerland, and Denmark tend to have highest happiness score while African countries such as South Sudan and Central African Republic tend to have lowest happiness score. Also, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score. 
+
+From 2015 to 2019, Australia and New Zealand has stable happiness scores and it’s the highest among 10 regions. North America has second highest happiness score among 10 regions with the highest happiness score in year 2015 and gradually decreasing trend. Western Europe has the third highest happiness score with an increasing trend in 5 years. Latin America and Caribbean has the fourth highest happiness score with a decreasing trend in 5 years. Eastern Asia has the fifth highest happiness score with a stable trend. Middle East and Northern Africa, Southeastern Asia, and Central and Eastern Europe have comparative happiness score from 2015 to 2017, but Central and Eastern Europe has a increasing trend and higher happiness score after year 2017 while the other two regions have a decreasing trend and lower happiness score after year 2017. Southern Asia and Sub-Saharan Africa has the second lowest and lowest happiness score in 5 years, respectively. However, Sub-Saharan Africa has shown an increasing trend while Southern Asia has shown an decreasing trend since year 2017.
+
+*For the six happiness indicators*, we found that The GDP per Capita increases from 2015 to 2017, then decreased from 2017 to 2018. There’s a slight increase from 2018 to 2019 but the world has the highest GDP per Capita in 2017. The social support decreased from 2015 to 201 with a significant increase from 2016 top 2017, then it stayed relatively stable. The healthy life expectancy score decreased from 2016 to 2017 then increased from 2017 to 2019. The freedom of choices decrease from 2015 to 2016, increased from 2016 to 2018 and decreased again in 2019. The proception of corruption stayed relatively stable but the world generally is seeing increasing corruptions. The generosity decrease from 2017 to 2018 which in align with the trend of GDP per Capita, suggesting possible association between people’s income and their generosity around the world. However, it’s worth noting that the countries with highest income are not the countries with top generosity scores. Overall, social support and healthy life expectancy improved from 2015 to 2019. 
+
+We noticed that at regional level, Australia and New Zealand ranked first in 4 four out of 6 factors and North American ranked first in 1 out of the other 2. It is worth mentioning that North American revision only has two countries, USA and Canada.  Australia and New Zealand also only has two countries, Australia, and New Zealand. They may have high average scores and less variable with in the region than the other 8 regions. The other regions might have countries with very high score and very low score which impacted the averages core. This will require further analysis. 
+
+Also there are not much discrepancy found in trend between the 10 regions and the regional trends align with the world trends as well.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+library(purrr)
+```
+
+```{r, message=FALSE, warning=FALSE}
+hap_df = read_csv("./data/combined_happiness.csv")|>
+  mutate(
+    year = as.factor(year)
+  )
+
+regional_hap_df = hap_df|>
+  group_by(region,year) |>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE),
+    average_social_support = mean(social_support, na.rm = TRUE),
+    average_healthy_life_expectancy = mean(health_life_expectancy, na.rm = TRUE),
+    average_freedom_to_make_life_choices = mean(freedom_to_make_life_choices, na.rm = TRUE),
+    average_perception_of_corruption = mean(perception_of_corruption, na.rm = TRUE),
+    average_generosity = mean(generosity, na.rm = TRUE)
+  )|>
+  pivot_longer(
+    average_gdp_per_capita:average_generosity,
+    names_to ="factor",
+    names_prefix = "average_",
+    values_to = "average_score"
+  )
+
+```
+
+```{r include=FALSE}
+library(ggplot2)
+library(stringr)
+library(maps)
+library(magrittr)
+library(rvest)
+library(countrycode)
+```
+
+```{r message=FALSE, warning=FALSE}
+iso_codes = countrycode::codelist[, c("un.name.en", "iso3c")]
+names(iso_codes) = c("Country", "ISO3")
+```
+
+```{r warning = FALSE, message = FALSE}
+world_data <- ggplot2::map_data('world')
+world_data <- fortify(world_data)
+```
+
+```{r message=FALSE, warning=FALSE}
+hap_df['ISO3'] <- iso_codes$ISO3[match(hap_df$country, iso_codes$Country)]
+world_data["ISO3"] <- iso_codes$ISO3[match(world_data$region, iso_codes$Country)]
+```
+
+```{r message=FALSE, warning=FALSE}
+hap_df = hap_df |>
+  mutate(
+    ISO3 = if_else(country == "United States", "USA", ISO3),
+    ISO3 = if_else(country == "United Kingdom", "GBR", ISO3),
+    ISO3 = if_else(country == "Venezuela", "VEN", ISO3),
+    ISO3 = if_else(country == "Czech Republic", "CZE", ISO3),
+    ISO3 = if_else(country == "Taiwan", "TWN", ISO3),
+    ISO3 = if_else(country == "South Korea", "KOR", ISO3),
+    ISO3 = if_else(country == "Bolivia", "BOL", ISO3),
+    ISO3 = if_else(country == "Moldova", "MDA", ISO3),
+    ISO3 = if_else(country == "Russia", "RUS", ISO3),
+    ISO3 = if_else(country == "Hong Kong", "CHN", ISO3),
+    ISO3 = if_else(country == "Vietnam", "VNM", ISO3),
+    ISO3 = if_else(country == "Turkey", "TUR", ISO3),
+    ISO3 = if_else(country == "Macedonia", "MKD", ISO3),
+    ISO3 = if_else(country == "Laos", "LAO", ISO3),
+    ISO3 = if_else(country == "Swaziland", "SWZ", ISO3),
+    ISO3 = if_else(country == "Palestinian Territories", "PSE", ISO3),
+    ISO3 = if_else(country == "Iran", "IRN", ISO3),
+    ISO3 = if_else(country == "Congo (Kinshasa)", "COD", ISO3),
+    ISO3 = if_else(country == "Congo (Brazzaville)", "COG", ISO3),
+    ISO3 = if_else(country == "Tanzania", "TZA", ISO3),
+    ISO3 = if_else(country == "Syria", "SYR", ISO3),
+    ISO3 = if_else(country == "Puerto Rico", "PRI", ISO3)
+  )|>
+  mutate(country = recode(str_trim(country),
+                         "United States" = "USA",
+                         "United Kingdom" = "UK",
+                         "Congo (Kinshasa)" = "Democratic Republic of the Congo",
+                         "Congo (Brazzaville)" = "Republic of Congo"))
+```
+
+```{r message=FALSE, warning=FALSE}
+world_data = world_data|>
+  mutate(country = region)|>
+  select(-region)
+
+worldjoin <- inner_join(world_data, hap_df, by = "country")
+```
+
+```{r, fig.width=12, fig.height=9, fig.retina=2}
+## compile all map theme configurations
+cleanup <- theme(
+  axis.text = element_blank(),
+  axis.line = element_blank(),
+  axis.ticks = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  axis.title = element_blank(),
+  panel.background = element_rect(fill = "white"),
+  plot.title = element_text(hjust = 0.5)
+)
+
+## plot our merged data
+
+gdp <- worldjoin %>% 
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=gdp_per_capita)) +
+  ggtitle("GDP Per Capita") +
+  cleanup
+
+gdp
+```
+
+## Which Country/ Region Has the Highest and Lowest Happiness Score?
+
+```{r include=FALSE}
+combined_happiness = read_csv("./data/combined_happiness.csv") |>
+  janitor::clean_names()
+
+combined_happiness$region[combined_happiness$region == "Eastern Asian"] <- "Eastern Asia"
+```
+
+
+### 2015
+
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness|>
+  filter(year == "2015")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2015 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  filter(year == "2015") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2015 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+hp_2015 <- worldjoin |>
+  filter(year == "2015") |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score)) +
+  ggtitle("Happiness Score 2015") +
+  cleanup
+
+hp_2015
+```
+
+At *country level*, in year 2015, Switzerland has the highest happiness score while Togo has the lowest happiness score among 158 countries.
+
+At *Region Level*, in year 2015, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2015.
+
+### 2016
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness|>
+  filter(year == "2016")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2016 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  filter(year == "2016") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2016 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+hp_2016 <- worldjoin |>
+  filter(year == "2016") |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score)) +
+  ggtitle("Happiness Score 2016") +
+  cleanup
+
+hp_2016
+```
+
+At *country level*, in year 2016, Denmark has the highest happiness score while Burundi has the lowest happiness score among 157 countries.
+
+At *region level*, in year 2016, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2016
+
+### 2017
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness|>
+  filter(year == "2017")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2017 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  filter(year == "2017") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2017 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+hp_2017 <- worldjoin |>
+  filter(year == "2017") |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score)) +
+  ggtitle("Happiness Score 2017") +
+  cleanup
+
+hp_2017
+```
+
+At *country level*, in year 2017, Norway has the highest happiness score while Central African Republic has the lowest happiness score among 155 countries.
+
+At *region level*, In year 2017, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2017.
+
+### 2018
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness|>
+  filter(year == "2018")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2018 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  filter(year == "2018") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2018 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+hp_2018 <- worldjoin |>
+  filter(year == "2018") |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score)) +
+  ggtitle("Happiness Score 2018") +
+  cleanup
+
+hp_2018
+```
+
+At *country level*, in year 2018, Finland has the highest happiness score while Burundi has the lowest happiness score among 156 countries.
+
+At *region level*, in year 2018, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2018.
+
+### 2019
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness|>
+  filter(year == "2019")|>
+  mutate(country = fct_reorder(country, score))|>
+  plot_ly(
+    x = ~country, y = ~score, color = ~region,
+    type = 'bar', colors = 'viridis'
+  )|>
+  layout(
+    title = "2019 World Happiness Score Rank",
+    xaxis = list(title = "Countries", tickfont = list(size = 6)),
+    yaxis = list(title = "Happiness Score"),
+    autosize = FALSE,
+    width = 800,
+    height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  filter(year == "2019") |>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "2019 World Happiness Score Rank", x = "Regions", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+hp_2019 <- worldjoin |>
+  filter(year == "2019") |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score)) +
+  ggtitle("Happiness Score 2019") +
+  cleanup
+
+hp_2019
+```
+
+At *country level*, in year 2019, Finland has the highest happiness score while South Sudan has the lowest happiness score among 156 countries.
+
+At *region level*, in year 2019, Australia and New Zealand has the highest happiness score while Sub-Saharan Africa has the lowest happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher happiness score while countries in Africa and Middle East Asia has relatively lower happiness score in 2019
+
+### Average in 5 years
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+hp_avg = 
+combined_happiness |>
+  select(year, country, region, score) |>
+  pivot_wider(
+    names_from = "year",
+    values_from = "score"
+  ) |>
+  na.omit() |>
+  pivot_longer(
+    "2015":"2019",
+    names_to = "year", 
+    values_to = "score"
+  ) |>
+  group_by(year, country) |>
+  mutate(score_avg = mean(score)) 
+
+hp_avg|>
+  arrange(desc(score_avg)) |>
+  ggplot(aes(x = reorder(country, -score_avg), y = score_avg, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average World Happiness Score Rank 2015-2019", x = "Countries", y = "Happiness Score") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 4)) +
+  guides(fill = guide_legend(nrow = 3)) + 
+  theme(legend.text = element_text(size = 6)) +
+  theme(legend.position = "bottom", plot.margin = margin(b = 10))
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hp_avg|>
+  group_by(region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(score_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = reorder(region, -score), y = score, fill = region)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average World Happiness Score Rank 2015-2019", x = "Countries", y = "Happiness Score") +
+  scale_x_discrete(labels = label_wrap_gen(width = 10)) +
+  theme(legend.position = "none")
+```
+
+```{r message=FALSE, warning=FALSE}
+wold_avg <- inner_join(world_data, hp_avg, by = "country")
+hp_avg_plot <- wold_avg |>
+  ggplot(mapping = aes(
+    x=long,
+    y=lat,
+    group=group)) +
+  scale_fill_viridis_c(option = "C") +
+  coord_fixed(1.3) +
+  geom_polygon(aes(fill=score_avg)) +
+  ggtitle("Average Happiness Score in 5 years") +
+  cleanup
+
+hp_avg_plot
+
+```
+
+At *country level*, we only keep countries that are in the top rank for all five years. Among those 144 countries, Danmark has the highest average happiness score while Burundi has the lowest average happiness score in 5 years.
+
+At *region level*, from 2015 to 2019, Australia and New Zealand has the highest average happiness score while Sub-Saharan Africa has the lowest average happiness score among 10 regions.
+
+In general, countries in Europe, Australia, North and South America have higher average happiness score while countries in Africa and Middle East Asia has relatively lower average happiness score from 2015 to 2019.
+
+
+## Which Country/Region Has the Highest and Lowest Score for the Six Happiness Factors? 
+
+### GDP Per Captia
+
+**At Country Level**
+```{r, message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(country = fct_reorder(country, gdp_per_capita))|>
+  plot_ly (
+  x = ~country, y = ~gdp_per_capita, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "GDP Per Capita",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "GDP Per Capita"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+```{r, message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, gdp_per_capita))|>
+  group_by(region, year)|>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_gdp_per_capita, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "GDP Per Capita By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+```{r, message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "gdp_per_capita")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for GDP Per Captia from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Qatar has the highest GDP Per Capita and Somalia and Central Africa has the lowest.  Qatar, Luxembourger, UAE, Singapore, Kuwait are the top 5 countries with the highest GDP Per Capita. Somalia, Central Africa Republic, Burundi, Democratic Republic of the Congo, Liberia are the bottom 5 countries with the lowest GDP Per Capita.
+
+At *regional level*, from 2015 to 2019, North America has the highest GDP and Sub-Saharan Africa has the lowest.  The trend between 10 regions is relatively similar, with peak at 2017 and decreased from 2017 to 2018. 
+
+### Social Support
+
+**At Country Level**
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(country = fct_reorder(country, social_support))|>
+  plot_ly (
+  x = ~country, y = ~social_support, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Social Support/Having Someone to Count On In Time of Trouble",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, social_support))|>
+  group_by(region, year)|>
+  summarise(
+    average_social_support = mean(social_support, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_social_support, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Social Support By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+
+```{r message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "social_support")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Social Support from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Iceland has the highest social support score. Benin and Syria has the lowest.  Iceland, Ireland, Denmark, New Zealand and Finland are the top 5 countries with the highest social support score. Benin, Syria, Togo, Burundi, Malawi are the bottom 5 countries with the lowest social support scores.
+
+At *regional level*, from 2015 to 2019, Australia and New Zealand has the highest social support score and Southern Asia has the lowest.  The trend between 10 regions is relatively similar, with a decreased from 2015 to 2016, then an increase trend afterwards.  
+
+### Life Expectancy
+
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(country = fct_reorder(country, health_life_expectancy))|>
+  plot_ly (
+  x = ~country, y = ~health_life_expectancy, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Healthy Life Expectancy",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, health_life_expectancy))|>
+  group_by(region, year)|>
+  summarise(
+    average_life_expectancy = mean(health_life_expectancy, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_life_expectancy, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Healthy Life Expectancy By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+
+```{r message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "healthy_life_expectancy")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Life Expectancy from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Singapore and Hong Kong, China has the highest life expectancy score. Singapore, Hong Kong, China, Japan,  Spain and South Korea are the top 5 countries with the highest score. Sierra Leone, Swaziland, Central Africa Republic, Chad and Nigeria are the bottom 5 countries with the lowest life expectancy scores.
+
+At *regional level*, from 2015 to 2019, Eastern Asia has the highest healthy life expectancy and S Sub-Saharan Africa has the lowest. The trend between 10 regions is relatively similar, with a increasing trend from 2015 to 2019.  
+
+### Freedom to make Choice 
+
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(
+    country = fct_reorder(country, freedom_to_make_life_choices))|>
+  plot_ly (
+  x = ~country, y = ~freedom_to_make_life_choices, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Freedom to Make Life Choices",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, freedom_to_make_life_choices))|>
+  group_by(region, year)|>
+  summarise(
+    average_freedom = mean(freedom_to_make_life_choices, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_freedom, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Freedom to Make Choice By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+
+```{r message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "freedom_to_make_life_choices")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Freedom to Make Life Choices from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Norway and Uzbekistan has the highest freedom score. Norway, Uzbekistan, Iceland, Finland, Switzerland are the top 5 countries with the highest score. Angola, Sudan, Haiti, Burundi, and Greece are the bottom 5 countries with the lowest freedom scores.
+
+At *regional level*, from 2015 to 2019, Australia and New Zealand has the highest freedom score and Middle East and Northern Africa has the lowest. The trend between 10 regions is relatively similar.  
+
+
+### Perception of Corruption
+
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(country = fct_reorder(country, perception_of_corruption))|>
+  plot_ly (
+  x = ~country, y = ~perception_of_corruption, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Perception of Corruption",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, perception_of_corruption))|>
+  group_by(region, year)|>
+  summarise(
+    average_corruption = mean(perception_of_corruption, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_corruption, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Perception of Corruption By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+
+```{r message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "perception_of_corruption")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Perception of Corruption from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Rwanda and Singapore has the lowest perception of corruption. Singapore, Rwanda, Qatar, Finland and Denmark are the top 5 countries with the lowest perception of corruption. Bosnia, Romania, Bulgaria, Moldova and Lithuania are the bottom 5 countries with the highest perception of corruption.
+
+At *regional level*, from 2015 to 2019, Australia and New Zealand has the lowest proception of corruption  Central and eastern Europe has the lowest. There are relatively larger variation in trend between the 10 regions compare to other factors, but all regions has increasing perception of correction. 
+
+### Generosity
+
+**At Country Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(country = fct_reorder(country, generosity))|>
+  plot_ly (
+  x = ~country, y = ~generosity, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Genersoity",
+    xaxis = list(
+      title = "country",
+      tickfont = list(size = 6)
+      ),
+    yaxis = list(title = "Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**At Region Level**
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  mutate(region = fct_reorder(region, generosity))|>
+  group_by(region, year)|>
+  summarise(
+    average_generosity = mean(generosity, na.rm = TRUE)
+  ) |>
+  plot_ly (
+  x = ~region, y = ~average_generosity, color = ~year,
+  type = "bar", colors = "viridis") |>
+  layout(
+    title = "Generosity By Region",
+    xaxis = list(title = "Region"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+**Regional Trend**
+
+```{r message=FALSE, warning=FALSE}
+regional_hap_df |>
+  filter(factor == "generosity")|>
+  plot_ly(
+      x = ~year, y = ~average_score, color = ~region,
+      mode = 'lines+markers', type = 'scatter', colors = 'viridis',
+      name = ~region) |>
+    layout(
+      title = paste("Regional Trend for Generosity from 2015 to 2019"),
+      xaxis = list(title = "Year"),
+      yaxis = list(title = "Average Score"),
+      autosize = F, width = 820, height = 500
+    )
+```
+
+At *countries level*, from 2015 to 2019, Myanmar has the highest generosity score. Myanmar, Thailand, Malta, Indonesia, and UK are the top 5 countries with the highest score. Lithuania, Morocco, Gabon,  Azerbaijan, and China are the bottom 5 countries with the lowest generosity scores.
+
+At *regional level*, from 2015 to 2019, Australia and New Zealand has the highest generosity proception of corruption  Central and eastern Europe has the lowest. The trend between 10 regions is relatively similar.  
+
+## World Trend of the Mean Happiness Score from 2015 to 2019
+
+```{r message=FALSE, warning=FALSE}
+combined_happiness |>
+  group_by(year, region) |>
+  mutate(region_avg = mean(score)) |>
+  arrange(desc(region_avg)) |>
+  summarize(region = unique(region), score = unique(region_avg)) |>
+  ggplot(aes(x = year, y = score, color = region)) +
+  geom_point() + 
+  geom_line() +
+  labs(title = "World Happiness Score Trend in 10 Regions", x = "year", y = "Happiness Score")
+
+```
+
+According to the scatter plot, from 2015 to 2019, Australia and New Zealand has stable happiness scores and it's the highest amnong 10 regions. North America has second highest happiness score among 10 regions with the highest happiness score in year 2015 and gradually decreasing trend. Western Europe has the third highest happiness score with an increasing trend in 5 years. Latin America and Caribbean has the fourth highest happiness score with a decreasing trend in 5 years. Eastern Asia has the fifth highest happiness score with a stable trend. Middle East and Northern Africa, Southeastern Asia, and Central and Eastern Europe have comparative happiness score from 2015 to 2017, but Central and Eastern Europe has a increasing trend and higher happiness score after year 2017 while the other two regions have a decreasing trend and lower happiness score after year 2017. Southern Asia and Sub-Saharan Africa has the second lowest and lowest happiness score in 5 years, respectively. However, Sub-Saharan Africa has shown an increasing trend while Southern Asia has shown an decreasing trend since year 2017.
+
+## World Trends of the Six Happiness Indicators from 2015 to 2019
+
+```{r message=FALSE, warning=FALSE}
+hap_df |>
+  group_by(year) |>
+  summarise(
+    average_gdp_per_capita = mean(gdp_per_capita, na.rm = TRUE),
+    average_social_support = mean(social_support, na.rm = TRUE),
+    average_healthy_life_expectancy = mean(health_life_expectancy, na.rm = TRUE),
+    average_freedom_to_make_life_choices = mean(freedom_to_make_life_choices, na.rm = TRUE),
+    average_perception_of_corruption = mean(perception_of_corruption, na.rm = TRUE),
+    average_generosity = mean(generosity, na.rm = TRUE)
+  )|>
+  pivot_longer(
+    average_gdp_per_capita:average_generosity,
+    names_to ="factor",
+    names_prefix = "average_",
+    values_to = "average_score"
+  )|>
+  plot_ly(
+    x = ~year, y = ~average_score, color = ~factor,
+    type = "scatter", mode = "lines+markers", colors = "viridis") |>
+  layout(
+    title = "World Trends of Happiness Indicators from 2015 to 2019",
+    xaxis = list( title = "Year"),
+    yaxis = list(title = "Average Score"),
+    autosize = F, width = 800, height = 500
+  )
+```
+
+The GDP per Capita increases from 2015 to 2017, then decreased from 2017 to 2018. There’s a slight increase from 2018 to 2019 but the world has the highest GDP per Capita in 2017. The social support decreased from 2015 to 201 with a significant increase from 2016 top 2017, then it stayed relatively stable. The healthy life expectancy score decreased from 2016 to 2017 then increased from 2017 to 2019. The freedom of choices decrease from 2015 to 2016, increased from 2016 to 2018 and decreased again in 2019. The preconception of corruption stayed relatively stable but the world generally is seeing increasing corruptions. The generosity decrease from 2017 to 2018 which in align with the trend of GDP per Capita, suggesting possible association between people’s income and their generosity around the world. However, it’s worth noting that the countries with highest income are not the countries with top generosity scores. Overall, social support and healthy life expectancy improved from 2015 to 2019. 
+
+# Multiple Linaer Regression 
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modelr)
+set.seed(1)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+## Part 1: Which factors impact the happiness score the most? 
+
+```{r message=FALSE, warning=FALSE}
+happiness_score = read_csv("./Data/combined_happiness.csv")
+
+predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = happiness_score)
+
+predicted_model|>
+  broom::tidy()|>
+  knitr::kable()
+
+```
+
+The variable "freedom to make life choices" exhibits the largest coefficient (1.4812709) with a highly significant p-value(<0.0000001), indicating it exerts the most substantial effect on happiness scores. Following this, "GDP per capita", "Health life expectancy", and "Social support" are also significant contributors to happiness in order of their estimates. "Perception of corruption" and "Generosity" also significantly impact happiness but to a lesser extent, based on their estimates and p-values.
+
+## Part 2: Does the result change over time?
+
+### 2015
+
+```{r}
+data_2015 = happiness_score|>
+  filter(year == 2015)
+
+model2015 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2015)
+
+model2015|>
+  broom::tidy()|>
+  knitr::kable()
+```
+In 2015, the variable “social support” exhibited the largest coefficient (1.4088916) with the lowest p-value(<0.0000001) among all variables. This indicated that it performed the most substantial effect on happiness score in 2015. Following “social support”, “freedom to make life choices”, “health life expectancy” and “gdp per capita” also appeared to have relatively high estimates with significant p-values , indicating that there were sufficient evidences to show their essential effects on happiness score. However, “perception of corruption” and “generosity” appeared to have p-values larger than 0.05 indicating that they didn’t have significant impact on happiness score.
+
+### 2016
+
+```{r}
+data_2016 = happiness_score|>
+  filter(year == 2016)
+
+model2016 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2016)
+
+model2016|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2016, the variable “freedom to make life choices” exhibited the largest coefficient (1.5139349) with a significant p-value(0.0001435), while the variable “health life expectancy” and “social support” exhibited the second and the third largest coefficient and more significant p-values(<0.0001) in comparison to variable “freedom to make life choices”. This indicated that they all exhibited a very outstanding impact on happiness score in 2016. Following them, “perception of corruption” and “gdp per capita” also appeared to have relatively high estimates with p-values smaller than 0.05, indicating that there were sufficient evidences to show their effects on happiness score. However, variable “generosity” appeared to have p-values 0.6602362, which is larger than 0.05, indicating that it didn’t exhibit significant impact to 2016’s happiness score.
+
+### 2017
+
+```{r}
+data_2017 = happiness_score|>
+  filter(year == 2017)
+
+model2017 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2017)
+
+model2017|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2017, the variable “freedom to make life choices” and “health life expectancy” exhibited the largest 2 coefficient (1.4757152) and (1.2888803) with significant p-values (0.0000298) and (0.0000965) respectively, while the variable “social support” exhibited the third largest coefficient and more significant p-values(<0.000001) in comparison to variable “freedom to make life choices” and “health life expectancy”. This indicated that they all exhibited a very outstanding impacts on happiness score in 2017. Following them, “gdp per capita” also appeared to have relatively high estimates (0.7844334) with p-values (0.0001849), indicating that there were sufficient evidences to show a significant impact on happiness score. However, variable “perception of corruption” and “generosity” appeared to have p-values larger than 0.05, indicating that they didn’t exhibit significant impact to 2017’s happiness score.
+
+### 2018
+
+```{r}
+data_2018 = happiness_score|>
+  filter(year == 2018)
+
+model2018 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2018)
+
+model2018|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2018, the variable “freedom to make life choices” and “social support” exhibited the largest 2 coefficient (1.3984419) and (1.1150219) with significant p-values (0.0000214) and (0.0000005) respectively, indicating that they play very substantial job on impacting happiness score. Following them, the variables “health life expectancy” and “gdp per capita” exhibited relatively large coefficients with significant p-values(<0.01), indicating that they also exhibited very outstanding impacts on happiness score in 2018. However, variable “perception of corruption” and “generosity” appeared to have p-values larger than 0.05, indicating that they didn’t exhibit significant impact to 2018’s happiness score.
+
+
+### 2019
+
+```{r}
+data_2019 = happiness_score|>
+  filter(year == 2019)
+
+model2019 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = data_2019)
+
+model2019|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+In 2019, the variable “freedom to make life choices” and “social support” exhibited the largest 2 coefficient (1.4548324) and (1.1241916) with significant p-values (0.0001587) and (0.0000048) respectively, indicating that they play very substantial job on impacting happiness score. Following them, the variables “health life expectancy” and “gdp per capita” exhibited relatively large coefficients with significant p-values(<0.01), indicating that they also exhibited very outstanding impacts on happiness score in 2019. However, variable “perception of corruption” and “generosity” appeared to have p-values larger than 0.05, indicating that they didn’t exhibit significant impact to 2019’s happiness score.
+
+According to the linear regressions performed separately for each year from 2015 to 2019, the main factor that impacted the happiness score changed over time. In 2015, “social support” had the most substantial impact on the happiness score, and its impact kept being significant until 2019. In the following 4 years, “freedom to make life choices” appeared to make the greatest impact on the happiness score. “health life expectancy” also impacted significantly on the happiness score since it exhibited the second or the third largest coefficient in the linear regression model from 2016 to 2019.
+
+## Part 3: Does the result vary by region?
+
+### Central and Eastern Europe
+```{r}
+central_east = happiness_score|>
+  filter(region == "Central and Eastern Europe")
+
+model1 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = central_east)
+
+model1|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Central and Eastern European countries, variables "freedom to make life choices" exhibited the largest coefficient(1.7050905) with significant p-value(0.0000021) indicating that it impacted substantially on happiness score. Meanwhile, variables "gdp per capita" and "social support" exhibited relatively high coefficients (1.0993611) and (0.5447398) respectively with significant p-value (<0.001) showing their essential impact on happiness score. Variables "health life expectancy", "perception of corruption" and "generosity" exhibited smaller and even negative coefficients; however, these variables did not exhibit significant p-values(>0.05) indicating that it was not significant enough to tell that they had impact on happiness score.
+
+### Eastern Asia
+```{r}
+east_asia = happiness_score|>
+  filter(region == "Eastern Asia")
+
+model2 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_asia)
+
+model2|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Eastern Asian countries, variable "perception of corruption" exhibited extremely high coefficient (-6.1001405) with a significant p-value(0.0007172) indicating that "perception of corruption" had extremely substantial negative impact on happiness score. Variable "gdp per capita" exhibited the second highest coefficient (2.6321054) with a significant p-value (0.0000010) indicating that it had essential impact on happiness score. However, other variables exhibited p-values larger than 0.05 showing that it was not significant enough to tell that they had impacts on happiness score.
+
+### Latin America and Caribbean
+```{r}
+latin_caribbean = happiness_score|>
+  filter(region == "Latin America and Caribbean")
+
+model3 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = latin_caribbean)
+
+model3|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Latin American and Caribbean countries, variable "freedom to make life choices" had the most significant impact on happiiness score since it exhibited the highest coefficient(2.4568168) with extremely significant p-value (<0.000001). Following this, variables "health life expectancy" and "gdp per capita" exhibited relatively high coefficients (1.7455082) and (1.4869935) respectively with significant p-values indicating their essential impact on happiness score. Variable "social support" exhibited a negative coefficient "-0.6315397" with a significant p-value (0.0066120) indicating that "social support" had negative impact on happiness score. However, variables "perception of corruption" and "generosity" appear to have p-values(>0.05) indicating that it was not significant enough to tell that they had impacts on happiness score.
+
+### Middle East and Northern Africa
+```{r}
+east_africa = happiness_score|>
+  filter(region == "Middle East and Northern Africa")
+
+model4 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = east_africa)
+
+model4|>
+  broom::tidy()|>
+  knitr::kable()
+```
+From 2015 to 2019, in Middle Eastern and Northern African countries, variables "health life expectancy" exhibited the largest coefficient (2.0670148) with a significant p-value(0.0000229), while the variable "gdp per capita" exhibited the second largest coefficient and more significant p-values(<0.0001) in comparison to variable "health life expectancy". The variables "generosity","freedom to make life choices" and "social support" also exhibited relatively large coefficient with significant p-value. This indicated that they all exhibited a very outstanding impact on happiness score. However, variable "perception of corruption" appeared to have p-values 0.5785945, which is larger than 0.05, indicating that it didn't  exhibit significant impact to the happiness score.
+
+### North America
+```{r}
+north_america = happiness_score|>
+  filter(region == "North America")
+
+model5 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = north_america)
+
+model5|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in North American countries, none of the 6 variables exhibited significant p-value since all their p-values were greater than 0.05 indicating that none of the variables exhibit significant impact to the happiness score.
+
+### Southeastern Asia
+```{r}
+southeastern_asia = happiness_score|>
+  filter(region == "Southeastern Asia")
+
+model6 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southeastern_asia)
+
+model6|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Southeastern Asian countries, only variable "gdp per capita" exhibited relatively high coefficient (1.6457687) with significant p-value (0.0000165) indicating that "gdp per capita" had substantial impact on happiness scrore. Despite "gdp per capita", none of other variables exhibited significant p-values indicating that we did not have sufficient evidence to show their impact on happiness score.
+
+### Southern Asia
+```{r}
+southern_asia = happiness_score|>
+  filter(region == "Southern Asia")
+
+model7 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = southern_asia)
+
+model7|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Southern Asian countries, only one variable, "perception of corruption", exhibited significant p-value (0.0003603) with extremely high coefficient (8.8312157) indicating that among all 6 variables, "perception of corruption" had the largest impact on happiness score.
+
+### Sub-Saharan Africa
+```{r}
+sub_africa = happiness_score|>
+  filter(region == "Sub-Saharan Africa")
+
+model8 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = sub_africa)
+
+model8|>
+  broom::tidy()|>
+  knitr::kable()
+```
+
+From 2015 to 2019, in Sub- Saharan African countries, variable "generosity" exhibited coefficient (2.0618730) with significant p-value (0.0000555) indicating that it had the most substantial impact on happiness score. Following this, variables "freedom to make life choice", "social support" and "gdp per capita" also had essential impact on happiness score since they had relatively large coefficient and significant p-value(<0.001). However, "health life expectancy" and "perception of corruption" did not appear to have significant p-value (>0.05) indicating that they did not have significant impact on happiness score.
+
+### Western Europe
+```{r}
+west_europe = happiness_score|>
+  filter(region == "Western Europe")
+
+model9 = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+                     data = west_europe)
+
+model9|>
+  broom::tidy()|>
+  knitr::kable()
+```
+From 2015 to 2019, in Western European countries, all 6 variables had significant impact on happiness score since their p-value were all smaller than 0.05. Among these variables, "perception of corruption" exhibited the largest coefficient and the smallest p-valu indicating that it had the most significant impact on happiness score. 
+
+According to the linear regression model performed separately according to their regions, factors that impacted the happiness score varied a lot. One extreme case took place in North American countries since none of the factors were playing significant roles in impacting their happiness score; another extreme case took place in western- European countries since all 6 variables had significant impact on the happiness score while "perception of corruption" was the main factors. The linear regression models also indicate that both Southern Asian countries and Southeastern Asian countries had only one factor, "perception of corruption" and "gdp per capita" respectively with extremely significant p-values. "freedom to make life choices" appeared to make the greatest impact on the happiness score in Central and Eastern European and Latin American and Caribbean countries countries."perception of corruption" played a substantial role on impacting the happiness score in southern Asian countries and eastern Asian countries.
+
+# Discussion/Conclusion
+According to the regression models for Happiness Score Prediction from 2015 to 2019, "Freedom to make life choices" and "social support" consistently exhibit the largest coefficients across all years (2015-2019), indicating their substantial impact on happiness scores. However, "Perception of corruption" and "generosity" consistently have p-values larger than 0.05 across all years, indicating that they do not exhibit a significant impact on happiness scores. "Health life expectancy" and "gdp per capita" consistently exhibit relatively large coefficients with significant p-values, emphasizing the importance of health and economic factors in explaining happiness scores over time. Therefore, while some variables consistently exhibit significance, there are variations in the significance levels across years. Potential year-to-year fluctuations in the factors influencing happiness scores should be expected and noticed in the upcoming years.
+
+According to our regression models for Happiness Prediction across different regions, we can tell that there is diversity in the patterns observed across continents, with each region having its own unique set of influential factors on happiness. The impact of specific variables varies across different regions. For example: "Freedom to make life choices" was particularly substantial in Central and Eastern European and Latin American and Caribbean countries; "Perception of corruption" played a substantial role in both Southern Asian and Eastern Asian countries. Meanwhile, there are limited significant factors in Certain Regions: Southern Asian and Southeastern Asian countries both had only one significant factor with extremely significant p-values; "Perception of corruption" was significant for Southern Asian countries; "GDP per capita" was significant for Southeastern Asian countries. The findings suggest that different regions may prioritize different factors when it comes to happiness. Understanding these regional priorities can be valuable for policymaking and interventions tailored to specific needs.
+
+
+
+[Back To Home](index.html)
