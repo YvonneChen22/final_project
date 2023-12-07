@@ -68,12 +68,12 @@ world_data = world_data|>
 worldjoin <- inner_join(world_data, combined_happiness, by = "country")
 ```
 
-    ## Warning in inner_join(world_data, combined_happiness, by = "country"): Detected an unexpected many-to-many relationship between `x` and
-    ## `y`.
+    ## Warning in inner_join(world_data, combined_happiness, by = "country"): Detected an unexpected many-to-many relationship between `x`
+    ## and `y`.
     ## ℹ Row 11 of `x` matches multiple rows in `y`.
     ## ℹ Row 153 of `y` matches multiple rows in `x`.
-    ## ℹ If a many-to-many relationship is expected, set `relationship =
-    ##   "many-to-many"` to silence this warning.
+    ## ℹ If a many-to-many relationship is expected, set
+    ##   `relationship = "many-to-many"` to silence this warning.
 
 ``` r
 ## compile all map theme configurations
@@ -357,12 +357,12 @@ score while Burundi has the lowest average happiness score in 5 years.
 wold_avg <- inner_join(world_data, hp_avg, by = "country")
 ```
 
-    ## Warning in inner_join(world_data, hp_avg, by = "country"): Detected an unexpected many-to-many relationship between `x` and
-    ## `y`.
+    ## Warning in inner_join(world_data, hp_avg, by = "country"): Detected an unexpected many-to-many relationship between `x`
+    ## and `y`.
     ## ℹ Row 11 of `x` matches multiple rows in `y`.
     ## ℹ Row 701 of `y` matches multiple rows in `x`.
-    ## ℹ If a many-to-many relationship is expected, set `relationship =
-    ##   "many-to-many"` to silence this warning.
+    ## ℹ If a many-to-many relationship is expected, set
+    ##   `relationship = "many-to-many"` to silence this warning.
 
 ``` r
 hp_avg_plot <- wold_avg |>

@@ -649,12 +649,12 @@ padding-top: 0px;
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>region)</span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>worldjoin <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(world_data, combined_happiness, <span class="at">by =</span> <span class="st">&quot;country&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in inner_join(world_data, combined_happiness, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x` and
-## `y`.
+<pre><code>## Warning in inner_join(world_data, combined_happiness, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x`
+## and `y`.
 ## ℹ Row 11 of `x` matches multiple rows in `y`.
 ## ℹ Row 153 of `y` matches multiple rows in `x`.
-## ℹ If a many-to-many relationship is expected, set `relationship =
-##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
+## ℹ If a many-to-many relationship is expected, set
+##   `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## compile all map theme configurations</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>cleanup <span class="ot">&lt;-</span> <span class="fu">theme</span>(</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
@@ -859,12 +859,12 @@ score while Burundi has the lowest average happiness score in 5
 years.</p>
 <h3 id="wordmap-5">wordmap</h3>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>wold_avg <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(world_data, hp_avg, <span class="at">by =</span> <span class="st">&quot;country&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in inner_join(world_data, hp_avg, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x` and
-## `y`.
+<pre><code>## Warning in inner_join(world_data, hp_avg, by = &quot;country&quot;): Detected an unexpected many-to-many relationship between `x`
+## and `y`.
 ## ℹ Row 11 of `x` matches multiple rows in `y`.
 ## ℹ Row 701 of `y` matches multiple rows in `x`.
-## ℹ If a many-to-many relationship is expected, set `relationship =
-##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
+## ℹ If a many-to-many relationship is expected, set
+##   `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>hp_avg_plot <span class="ot">&lt;-</span> wold_avg <span class="sc">|&gt;</span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(</span>
 <span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>    <span class="at">x=</span>long,</span>

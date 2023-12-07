@@ -19,8 +19,8 @@ Happiness is a critical measure of social progress. Understanding what drives ha
 
 # Screencast
 
-
 # Project Information
+
 
 ## About
 
@@ -28,11 +28,13 @@ In this section, we introduce our team member.
 
 [To The Page](About.html)
 
+
 ## Data
 
 In this section, we introduce the data source, background, and how we clean and tidy the dataset.
 
 [To The Page](Data.html)
+
 
 ## Regression Analysis
 
@@ -40,17 +42,24 @@ In this section, we run regression analysis to explore our main research questio
 
 [To The Page](Regression_Analysis.html)
 
+
 ## Exploratory Data Analysis
 
 In this section, we explore other research questions related to the distribution of happiness score and six factors that we are interested in.
 
 [To The Page](EDA.html)
 
+
 ## Final Report
 
 In this section, we composite a final report based on our exploration process and results.
 
 [To The Page](Final-Report.html)
+
+
+
+
+
 
 
 

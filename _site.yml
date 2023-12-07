@@ -22,4 +22,4 @@ navbar:
       href: https://github.com/YvonneChen22/
 output:
   html_document:
-    theme: cerulean
+    theme: united
