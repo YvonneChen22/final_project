@@ -20,7 +20,7 @@ We sourced our data from The World Happiness Report, first published in 2012. Th
 
 ## Data merging and cleaning
 We imported five dataset into RStudio. In order to merge them, we need to make sure all datasets have the same variables. We first updated all variable to `snake cases`, removed the unwanted variables and added a `year` variable representing the year for each dataset. Because only `2015` and `2016` data recorded `region` for each `country,` we extracted the `country` and `region` variables into separate data frame and `left_join` it into `2017`, `2018` and `2019` by `country `. We then stack all five dataset into our final dataset using `bind_row`. We then check if there’s any missing or miscoded values. Because there are new counties entering into the survey and ranking in 2017, 2018 and 2019, with no region recorded, and the dataset records same country differently in each year. We manually updated the value using `mutate()`. The code is read as following:
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 ```
 
