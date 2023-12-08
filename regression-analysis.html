@@ -293,16 +293,9 @@ $(document).ready(function () {
 <p>Tingyi Li 2023-12-03</p>
 <p>#Part 1</p>
 <p>#Multiple Linear Regression for Happiness Score Prediction</p>
-<pre class="r"><code>happiness_score = read_csv(&quot;./Data/combined_happiness.csv&quot;)</code></pre>
-<pre><code>## Rows: 782 Columns: 11
-## ── Column specification ─────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (2): country, region
-## dbl (9): year, rank, score, gdp_per_capita, social_support, health_life_expe...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
+<pre class="r"><code>happiness_score = read_csv(&quot;./Data/combined_happiness.csv&quot;)
+
+predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
                      data = happiness_score)
 
 predicted_model|&gt;

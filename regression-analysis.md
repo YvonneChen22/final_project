@@ -9,18 +9,7 @@ Tingyi Li
 
 ``` r
 happiness_score = read_csv("./Data/combined_happiness.csv")
-```
 
-    ## Rows: 782 Columns: 11
-    ## ── Column specification ─────────────────────────────
-    ## Delimiter: ","
-    ## chr (2): country, region
-    ## dbl (9): year, rank, score, gdp_per_capita, social_support, health_life_expe...
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-``` r
 predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
                      data = happiness_score)
 

@@ -34,7 +34,7 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 #Multiple Linear Regression for Happiness Score Prediction
 
-```{r}
+```{r message=FALSE}
 happiness_score = read_csv("./Data/combined_happiness.csv")
 
 predicted_model = lm(formula = score ~ gdp_per_capita + social_support + health_life_expectancy + freedom_to_make_life_choices + perception_of_corruption + generosity, 
