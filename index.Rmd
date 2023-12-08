@@ -5,6 +5,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+    code_folding: hide
 ---
 
 <img src="images/happiness_score.jpg" style="width:75%">
@@ -18,6 +19,9 @@ Happiness is a critical measure of social progress. Understanding what drives ha
 
 
 # Screencast
+```{r}
+vembedr::embed_url("https://youtu.be/egirmuVnMV0")
+```
 
 # Project Information
 
